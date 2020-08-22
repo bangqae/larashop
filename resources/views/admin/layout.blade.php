@@ -95,11 +95,7 @@
 
       <div class="content-wrapper">
 
-        <div class="content">
-
-          @yield('content')
-
-        </div>
+        @yield('content')
 
       </div>
 
@@ -151,6 +147,13 @@
 
 
   <script src="{{ asset('admin/assets/js/sleek.bundle.js') }}"></script>
+
+  {{-- Confirm delete --}}
+  <script>
+    $(".delete").on("submit", function () {
+      return confirm("Do you want to remove this?");
+    });
+  </script>
 </body>
 
 </html>

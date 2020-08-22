@@ -4,7 +4,10 @@
   =====================================
 -->
 <aside class="left-sidebar bg-sidebar">
-  <div id="sidebar" class="sidebar sidebar-with-footer">
+  <div id="sidebar" class="sidebar">
+    {{-- origin is below --}}
+    {{-- <div id="sidebar" class="sidebar sidebar-with-footer"> --}}
+
     <!-- Aplication Brand -->
     <div class="app-brand">
       <a href="/index.html" title="Sleek Dashboard">
@@ -628,7 +631,8 @@
 
     </div>
 
-    <div class="sidebar-footer">
+    {{-- class 'sidebar-with-footer' for make the space for this thing below, find it on the top of the file --}}
+    {{-- <div class="sidebar-footer">
       <hr class="separator mb-0" />
       <div class="sidebar-footer-content">
         <h6 class="text-uppercase">
@@ -644,6 +648,6 @@
           <div class="progress-bar progress-bar-warning" style="width: 65%;" role="progressbar"></div>
         </div>
       </div>
-    </div>
+    </div> --}}
   </div>
 </aside>
