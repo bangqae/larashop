@@ -29,16 +29,18 @@
                                     <td>{{ $category->id }}</td>
                                     <td>{{ $category->name }}</td>
                                     <td>{{ $category->slug }}</td>
-                                    <td>{{ $category->parent_id }}</td>
+                                    <td>{{ $category->parent_id ? $category->parent->name : ''}}</td>
                                     <td>
                                         <a href="{{ url('admin/categories/'.$category->id.'/edit') }}"
-                                            class="btn btn-warning btn-sm">Edit</a>
-                                        {{-- <a href="{{ url('admin/categories/'.$category->id.'/edit') }}"
-                                            class="btn btn-warning btn-sm"><i class="mdi mdi-grease-pencil"></i></a> --}}
+                                            {{-- class="btn btn-warning btn-sm">Edit</a> --}}
+                                            class="btn btn-warning btn-sm"><i class="mdi mdi-grease-pencil"></i></a>
 
-                                        {!! Form::open(['url' => 'admin/categories/'.$category->id, 'class' => 'delete', 'style' => 'display:inline-block']) !!}
+                                        {!! Form::open(['url' => 'admin/categories/'.$category->id, 'class' => 'delete',
+                                        'style' => 'display:inline-block']) !!}
                                         {!! Form::hidden('_method', 'DELETE') !!}
-                                        {!! Form::submit('Remove', ['class' => 'btn btn-danger btn-sm']) !!}
+                                        {{-- {!! Form::submit('Remove', ['class' => 'btn btn-danger btn-sm']) !!} --}}
+                                        {!! Form::button('<i class="mdi mdi-close-outline"></i>', ['type' => 'submit',
+                                        'class' => 'btn btn-danger btn-sm']) !!}
                                         {!! Form::close() !!}
                                     </td>
                                 </tr>
@@ -61,4 +63,23 @@
     </div>
 </div>
 
+@endsection
+
+@section('responsive-table-div')
+<div>
+    @forelse ($categories as $category)
+
+    <p>{{ $category->id }}</p>
+    <p>{{ $category->name }}</p>
+    <p>{{ $category->slug }}</p>
+    <p>{{ $category->parent_id }}</p>
+    <br>
+
+    @empty
+
+    <div>No records found</div>
+
+    @endforelse
+</div>
+{{ $categories->links() }}
 @endsection

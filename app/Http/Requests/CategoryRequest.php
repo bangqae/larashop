@@ -23,33 +23,33 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        /**
-         * Pakaian Wanita
-         *      Gamis
-         *      Jeans
-         * Pakaian Pria
-         *      Kemeja
-         *      Jeans
-         */
-        
+        // Pakain Wanita
+        //     Jeans
+        //     Gamis
+        // Pakain Pria
+        //     Kemeja
+        //     Jeans
+
         $parentId = (int) $this->get('parent_id');
         $id = (int) $this->get('id');
 
-        if($this->method() == 'PUT') {
+        if ($this->method() == 'PUT') {
             if ($parentId > 0) {
-                // Kondisi ketika user edit category dengan mendefinikan parent category
+                // Kondisi ketika user edit category dengan mendefinisikan parent category
                 $name = 'required|unique:categories,name,'.$id.',id,parent_id,'.$parentId;
             } else {
-                // Kondisi ketika user edit category tanpa mendefinikan parent category
+                // Kondisi ketika user edit category tanpa mendefinisikan parent category
                 $name = 'required|unique:categories,name,'.$id;
             }
 
             $slug = 'unique:categories,slug,'.$id;
+
         } else {
             // Kondisi ketika user add category
             $name = 'required|unique:categories,name,NULL,id,parent_id,'.$parentId;
             $slug = 'unique:categories,slug';
         }
+
         return [
             'name' => $name,
             'slug' => $slug,
