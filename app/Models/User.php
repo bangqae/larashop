@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function products() // Jamak
+    {
+        return $this->hasMany('App\Model\Product'); // Relasi one to many, tapi di model Product : one to one
+    }
 }

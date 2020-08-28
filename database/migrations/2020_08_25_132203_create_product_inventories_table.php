@@ -25,7 +25,7 @@ class CreateProductInventoriesTable extends Migration
             $table->foreign('product_id')
             ->references('id')
             ->on('products')
-            ->onDelete('cascade'); // Jika data pada tabel products di hapus, maka data di tabel ini juga ikut terhapus
+            ->onDelete('cascade'); // Jika data pada tabel products dihapus, maka data di tabel ini juga ikut terhapus
       
             $table->foreign('product_attribute_value_id')
             ->references('id')
