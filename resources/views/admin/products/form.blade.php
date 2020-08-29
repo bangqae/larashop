@@ -8,6 +8,11 @@ $formTitle = !empty($categoryIDs) ? 'Update' : 'New'
 
 <div class="content">
     <div class="row">
+        @if (!empty($productID))
+        <div class="col-lg-4">
+            @include('admin.products.product_menus')
+        </div>
+        @endif
         <div class="col-lg-8">
             <div class="card card-default">
                 <div class="card-header card-header-border-bottom">

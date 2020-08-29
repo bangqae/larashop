@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
+use Str;
+// use Illuminate\Http\Request;
+use Auth;
+use Session;
+
 use App\Models\Product;
 use App\Models\Category;
-// use Illuminate\Http\Request;
-use App\Http\Requests\ProductRequest;
+use App\Models\ProductImage;
 use App\Http\Controllers\Controller;
-
-use Str;
-use Auth;
-use DB;
-use Session;
+use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductImageRequest;
 
 class ProductController extends Controller
 {
@@ -43,6 +45,7 @@ class ProductController extends Controller
 
         $this->data['categories'] = $categories->toArray();
         $this->data['product'] = null;
+        $this->data['productID'] = 0;
         $this->data['categoryIDs'] = [];
 
         return view('admin.products.form', $this->data);
@@ -51,7 +54,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\ProductRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(ProductRequest $request)
@@ -96,11 +99,16 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if (empty($id)) { // Kalo $id-nya null, ubah jadi add
+            return redirect('admin/products/create');
+        }
+        
         $product = Product::findOrFail($id);
         $categories = Category::orderBy('name', 'ASC')->get();
 
         $this->data['categories'] = $categories->toArray();
         $this->data['product'] = $product;
+        $this->data['productID'] = $product->id;
         $this->data['categoryIDs'] = $product->categories->pluck('id')->toArray();
 
         return view('admin.products.form', $this->data);
@@ -109,7 +117,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\ProductRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -153,5 +161,97 @@ class ProductController extends Controller
         }
 
         return redirect('admin/products');
+    }
+
+    /**
+     * Display list of images.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function images($id)
+    {
+        if (empty($id)) { // Kalo $id-nya null, ubah jadi method create
+            return redirect('admin/products/create');
+        }
+
+        $product = Product::findOrFail($id);
+
+        $this->data['productID'] = $product->id;
+        $this->data['productImages'] = $product->productImages;
+
+        return view('admin.products.images', $this->data);
+    }
+
+    /**
+     * Show the form for add new product image.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function add_image($id)
+    {
+        if (empty($id)) { // Kalo $id-nya null, kembali ke index
+            return redirect('admin/products');
+        }
+
+        $product = Product::findOrFail($id);
+
+        $this->data['productID'] = $product->id;
+        $this->data['product'] = $product;
+
+        return view('admin.products.image_form', $this->data);
+    }
+
+    /**
+     * Add new image to specified product.
+     *
+     * @param  App\Http\Requests\ProductImageRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response 
+     */  
+    public function upload_image(ProductImageRequest $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        if ($request->has('image')) {
+            $image = $request->file('image');
+            $name = $product->slug .'_'. time(); // time() agar nama yang sama tidak tertimpa
+            $fileName = $name . '.' . $image
+            ->getClientOriginalExtension(); // Ambil ekstensi asli file
+
+            $folder = '/uploads/images'; // Folder file image
+            $filePath = $image->storeAs($folder, $fileName, 'public');
+
+            $params = [
+                'product_id' => $product->id,
+                'path' => $filePath,
+            ];
+
+            if (ProductImage::create($params)) {
+                Session::flash('success', 'Image has been uploaded!');
+            } else {
+                Session::flash('error', 'Image could not be uploaded!');
+            }
+
+            return redirect('admin/products/'. $id .'/images');
+        }
+    }
+
+    /**
+     * Remove image file and image data from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function remove_image($id)
+    {
+        $image = ProductImage::findOrFail($id);
+
+        if ($image->delete()) {
+            Session::flash('success', 'Image has been deleted!');
+        }
+
+        return redirect('admin/products/' . $image->product->id . '/images');
     }
 }
