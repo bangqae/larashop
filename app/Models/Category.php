@@ -11,13 +11,13 @@ class Category extends Model
     public function childs() // Jamak
     {
         // Relasi ke dirinya sendiri, parent_id bukan pivot table, tapi field di tabel categories yang diambil dari id
-        return $this->hasMany('App\Model\Category', 'parent_id'); // Relasi one to many
+        return $this->hasMany('App\Model\Category', 'parent_id'); // Relasi 1 to many
     }
 
     public function parent() // Tunggal
     {
         // Relasi ke dirinya sendiri, parent_id bukan pivot table, tapi field di tabel categories yang diambil dari id
-        return $this->belongsTo('App\Models\Category', 'parent_id'); // Relasi one to one
+        return $this->belongsTo('App\Models\Category', 'parent_id'); // Relasi 1 to 1
     }
 
     public function products() // Jamak

@@ -5,7 +5,7 @@
 <div class="content">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card cart-default">
+            <div class="card card-default">
                 <div class="card-header card-header-border-bottom">
                     <h2>Products</h2>
                 </div>
@@ -26,6 +26,7 @@
                             <tbody>
 
                                 @forelse ($products as $product)
+
                                 <tr>
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->sku }}</td>
@@ -44,10 +45,13 @@
                                         {!! Form::close() !!}
                                     </td>
                                 </tr>
+
                                 @empty
+
                                 <tr>
                                     <td colspan="5">No records found</td>
                                 </tr>
+                                
                                 @endforelse
 
                             </tbody>
@@ -60,10 +64,18 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-12">
+            <button></button>
+        </div>
     </div>
 </div>
 
 @endsection
 
 @section('unused')
+<script type="text/javascript">
+$('#button').click( function(){
+$(".i")
+});
+</script>
 @endsection

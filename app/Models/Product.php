@@ -23,7 +23,7 @@ class Product extends Model
 
     public function user() // Tunggal
     {
-        return $this->belongsTo('App\Models\User'); // Relasi one to one, tapi di model User : one to many
+        return $this->belongsTo('App\Models\User'); // Relasi 1 to 1, tapi di model User : 1 to many
     }
 
     public function categories() // Jamak
