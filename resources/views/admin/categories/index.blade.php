@@ -13,7 +13,7 @@
 
                     @include('admin.partials.flash')
 
-                    <div class="table-responsive">
+                    <div class="table-responsive-sm">
                         <table class="table table-bordered tabel-stripped">
                             <thead>
                                 <th>#</th>

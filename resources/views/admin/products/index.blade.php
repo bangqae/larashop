@@ -13,15 +13,16 @@
 
                     @include('admin.partials.flash')
 
-                    <div class="table-responsive">
+                    <div class="table-responsive-sm">
                         <table class="table table-bordered tabel-stripped">
                             <thead>
                                 <th>#</th>
                                 <th>SKU</th>
+                                <th>Type</th>
                                 <th>Name</th>
                                 <th>Price</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th style="width: 10%">Action</th>
                             </thead>
                             <tbody>
 
@@ -30,9 +31,10 @@
                                 <tr>
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->sku }}</td>
+                                    <td>{{ $product->type }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>{{ $product->status}}</td>
+                                    <td>{{ number_format($product->price) }}</td>
+                                    <td>{{ $product->status_label()}}</td>
                                     <td>
                                         <a href="{{ url('admin/products/'.$product->id.'/edit') }}"
                                             class="btn btn-warning btn-sm"><i class="mdi mdi-grease-pencil"></i></a>
@@ -49,9 +51,9 @@
                                 @empty
 
                                 <tr>
-                                    <td colspan="5">No records found</td>
+                                    <td colspan="7">No records found</td>
                                 </tr>
-                                
+
                                 @endforelse
 
                             </tbody>
@@ -74,8 +76,8 @@
 
 @section('unused')
 <script type="text/javascript">
-$('#button').click( function(){
-$(".i")
-});
+    $('#button').click( function(){
+        $(".i")
+    });
 </script>
 @endsection

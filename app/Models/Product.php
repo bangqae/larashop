@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
+        'parent_id',
         'user_id',
         'sku',
+        'type',
         'name',
         'slug',
         'price',
@@ -26,13 +28,33 @@ class Product extends Model
         return $this->belongsTo('App\Models\User'); // Relasi 1 to 1, tapi di model User : 1 to many
     }
 
-    public function categories() // Jamak
+    public function productInventory() // Tunggal
     {
-        // Tabel product_categories adalah pivot table
-        return $this->belongsToMany('App\Models\Category','product_categories'); // Relasi many to many
+        return $this->hasOne('App\Models\ProductInventory'); // 1 to 1
     }
 
-    public function productImages()
+    public function categories() // Jamak
+    {
+        // product_categories is pivot table
+        return $this->belongsToMany('App\Models\Category','product_categories'); // many to many
+    }
+
+    public function variants() // Jamak
+    {
+        return $this->hasMany('App\Models\Product', 'parent_id'); // 1 parent can have many variant
+    }
+
+    public function parent() // Tunggal
+    {
+        return $this->belongsTo('App\Models\Product', 'parent_id'); // 1 variant only have 1 parent
+    }
+
+    public function productAttributeValues() // Jamak
+    {
+        return $this->hasMany('App\Models\ProductAttributeValue'); // 1 to many
+    }
+
+    public function productImages() // Jamak
     {
         return $this->hasMany('App\Models\ProductImage'); // 1 to many
     }
@@ -43,6 +65,21 @@ class Product extends Model
             0 => 'draft',
             1 => 'active',
             2 => 'inactive',
+        ];
+    }
+
+    function status_label()
+    {
+        $statuses = $this->statuses();
+
+       return isset($this->status) ? $statuses[$this->status] : null;
+    }
+
+    public static function types() // Whether the product has other variants or not
+    {
+        return [
+            'simple' => 'Simple',
+            'configurable' => 'Configurable',
         ];
     }
 }

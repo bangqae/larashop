@@ -24,7 +24,8 @@ $formTitle = !empty($attributeOption) ? 'Update' : 'Add'
             <button type="submit" class="btn btn-primary btn-default">Save</button>
             <a href="{{ url('admin/attributes/') }}" class="btn btn-secondary btn-default">Back</a>
             @if (!empty($attributeOption))
-            <a href="{{ url('admin/attributes/'.$attribute->id.'/options') }}" class="btn btn-outline-secondary btn-default">New</a>
+            <a href="{{ url('admin/attributes/'.$attribute->id.'/options') }}"
+                class="btn btn-outline-secondary btn-default">New</a>
             @endif
         </div>
         {!! Form::close() !!}

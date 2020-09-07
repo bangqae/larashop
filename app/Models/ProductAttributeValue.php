@@ -6,5 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductAttributeValue extends Model
 {
-    //
+    protected $fillable = [
+        'product_id',
+        'attribute_id',
+        'text_value',
+        'boolean_value',
+        'integer_value',
+        'float_value',
+        'datetime_value',
+        'date_value',
+        'json_value',
+    ];
+
+    public function product() // Tunggal
+    {
+        return $this->belongsTo('App\Models\Product'); // 1 to 1
+    }
 }

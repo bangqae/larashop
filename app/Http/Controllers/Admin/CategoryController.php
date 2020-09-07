@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Str;
+use Session;
+
 use App\Models\Category;
-// use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+
 use App\Http\Controllers\Controller;
+
+// use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
-use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
