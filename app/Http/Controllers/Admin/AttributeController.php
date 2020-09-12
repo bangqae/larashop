@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Session;
+use App\Authorizable;
 
 use App\Models\Attribute;
 use App\Models\AttributeOption;
 
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Session; // use Session
+
 use App\Http\Requests\AttributeRequest;
 use App\Http\Requests\AttributeOptionRequest;
 
 class AttributeController extends Controller
 {
+    use Authorizable;
+    
     public function __construct()
     {
         $this->data['types'] = Attribute::types();

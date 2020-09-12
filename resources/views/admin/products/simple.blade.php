@@ -7,13 +7,15 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            {!! Form::label('weight', 'Weight') !!}
+            {!! Form::label('weight', 'Weight (Kg)') !!}
             {!! Form::text('weight', null, ['class' => 'form-control', 'placeholder' => 'weight']) !!}
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('qty', 'Qty Inventory') !!}
+            {{-- {!! Form::text('qty', $qty, ['class' => 'form-control', 'placeholder' => 'qty']) !!} --}}
+            {{-- Origin is below --}}
             {!! Form::text('qty', null, ['class' => 'form-control', 'placeholder' => 'qty']) !!}
         </div>
     </div>

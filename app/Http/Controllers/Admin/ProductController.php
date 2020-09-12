@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DB;
-use Str;
-use Auth;
-use Session;
+use App\Authorizable;
 
 use App\Models\Product;
 use App\Models\Category;
@@ -13,16 +10,22 @@ use App\Models\Attribute;
 use App\Models\ProductImage;
 use App\Models\AttributeOption;
 use App\Models\ProductInventory;
+use App\Models\ProductAttributeValue;
 
-// use Illuminate\Http\Request;
+use Illuminate\Support\Str; // use Str;
+use Illuminate\Support\Facades\DB; // use DB;
+use Illuminate\Support\Facades\Auth; // use Auth;
+use Illuminate\Support\Facades\Session; // use Session;
+
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\ProductRequest;
-use App\Models\ProductAttributeValue;
 use App\Http\Requests\ProductImageRequest;
 
 class ProductController extends Controller
 {
+    use Authorizable;
+
     /** Constructor, just static array from Product */
     public function __construct()
     {
@@ -166,7 +169,7 @@ class ProductController extends Controller
         $product = DB::transaction(function () use ($params) {
             $categoryIds = !empty($params['category_ids']) ? $params['category_ids'] : []; // Tangkap id category yang dipilih
             $product = Product::create($params);
-            $product->categories()->sync($params['category_ids']);
+            $product->categories()->sync($categoryIds);
 
             if ($params['type'] == 'configurable') { // Ketika user menambahkan product dengan type configurable
                 $this->generateProductVariants($product, $params);
@@ -210,12 +213,26 @@ class ProductController extends Controller
         
         $product = Product::findOrFail($id);
         $categories = Category::orderBy('name', 'ASC')->get();
+        // Menambahkan attribute baru ke original
+        // Attribute data, bukan color,size,etc
+        // Cek dengan ddump
+        $product->qty = isset($product->productInventory) ? $product->productInventory->qty : null;
 
         $this->data['categories'] = $categories->toArray();
         $this->data['product'] = $product;
         $this->data['productID'] = $product->id;
-        $this->data['categoryIDs'] = $product->categories->pluck('id')->toArray();
+        
+        // Im adding this, but lame
+        // if ($product->type == 'simple') {
+        //     if ($product->productInventory()->where('product_id', $product->id)->exists()) {
+        //         $this->data['qty'] = $product->productInventory->qty;
+        //     } else {
+        //         $this->data['qty'] = null;
+        //     }
+        // }
 
+        $this->data['categoryIDs'] = $product->categories->pluck('id')->toArray();
+        // dd($this->data);
         return view('admin.products.form', $this->data);
     }
 

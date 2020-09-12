@@ -20,28 +20,29 @@ Route::get('/', function () {
 Route::group(
     ['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth']],
     function () {
-        Route::get('dashboard', 'DashboardController@index');
+        Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
+        
         Route::resource('categories', 'CategoryController');
         
         Route::resource('products', 'ProductController');
-        Route::get('products/{productID}/images', 'ProductController@images');
-        Route::get('products/{productID}/add-image', 'ProductController@add_image');
-        Route::post('products/images/{productID}', 'ProductController@upload_image');
-        Route::delete('products/images/{imageID}', 'ProductController@remove_image');
+        Route::get('products/{productID}/images', 'ProductController@images')->name('products.images');
+        Route::get('products/{productID}/add-image', 'ProductController@add_image')->name('products.add_image');
+        Route::post('products/images/{productID}', 'ProductController@upload_image')->name('products.upload_image');
+        Route::delete('products/images/{imageID}', 'ProductController@remove_image')->name('products.remove_image');
 
         Route::resource('attributes', 'AttributeController');
         // Menampilkan list option untuk attribute tertentu
-        Route::get('attributes/{attributeID}/options', 'AttributeController@options');
+        Route::get('attributes/{attributeID}/options', 'AttributeController@options')->name('attributes.options');
         // Menampilkan form tambah option
-        Route::get('attributes/{attributeID}/add-option', 'AttributeController@add_option'); // Gak kepake hehe
+        Route::get('attributes/{attributeID}/add-option', 'AttributeController@add_option')->name('attributes.add_option'); // Gak kepake hehe
         // Menyimpan option sebuah attribute
-        Route::post('attributes/options/{attributeID}', 'AttributeController@store_option');
+        Route::post('attributes/options/{attributeID}', 'AttributeController@store_option')->name('attributes.store_option');
         // Menghapus option dari attribute tertentu
-        Route::delete('attributes/options/{optionID}', 'AttributeController@remove_option');
+        Route::delete('attributes/options/{optionID}', 'AttributeController@remove_option')->name('attributes.remove_option');
         // Menampilkan form edit option
-        Route::get('attributes/options/{optionID}/edit', 'AttributeController@edit_option');
+        Route::get('attributes/options/{optionID}/edit', 'AttributeController@edit_option')->name('attributes.edit_option');
         // Meng-update option sebuah attribute
-        Route::put('attributes/options/{optionID}', 'AttributeController@update_option');
+        Route::put('attributes/options/{optionID}', 'AttributeController@update_option')->name('attributes.update_options');
     }
 );
 

@@ -31,10 +31,12 @@
                                     <td>{{ $category->slug }}</td>
                                     <td>{{ $category->parent_id ? $category->parent->name : ''}}</td>
                                     <td>
+                                        @can('edit_categories')    
                                         <a href="{{ url('admin/categories/'.$category->id.'/edit') }}"
                                             {{-- class="btn btn-warning btn-sm">Edit</a> --}}
                                             class="btn btn-warning btn-sm"><i class="mdi mdi-grease-pencil"></i></a>
-
+                                        @endcan
+                                        @can('delete_categories')
                                         {!! Form::open(['url' => 'admin/categories/'.$category->id, 'class' => 'delete',
                                         'style' => 'display:inline-block']) !!}
                                         {!! Form::hidden('_method', 'DELETE') !!}
@@ -42,6 +44,7 @@
                                         {!! Form::button('<i class="mdi mdi-close-outline"></i>', ['type' => 'submit',
                                         'class' => 'btn btn-danger btn-sm']) !!}
                                         {!! Form::close() !!}
+                                        @endcan
                                     </td>
                                 </tr>
                                 @empty
@@ -55,9 +58,11 @@
                         {{ $categories->links() }}
                     </div>
                 </div>
+                @can('add_categories')
                 <div class="card-footer text-right">
                     <a href="{{ url('admin/categories/create') }}" class="btn btn-primary">Add New</a>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

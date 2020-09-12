@@ -39,12 +39,14 @@
                                         <a href="{{ url('admin/products/'.$product->id.'/edit') }}"
                                             class="btn btn-warning btn-sm"><i class="mdi mdi-grease-pencil"></i></a>
 
+                                        @can('delete_products')
                                         {!! Form::open(['url' => 'admin/products/'.$product->id, 'class' => 'delete',
                                         'style' => 'display:inline-block']) !!}
                                         {!! Form::hidden('_method', 'DELETE') !!}
                                         {!! Form::button('<i class="mdi mdi-close-outline"></i>', ['type' => 'submit',
                                         'class' => 'btn btn-danger btn-sm']) !!}
                                         {!! Form::close() !!}
+                                        @endcan
                                     </td>
                                 </tr>
 
@@ -61,9 +63,13 @@
                         {{ $products->links() }}
                     </div>
                 </div>
+
+                @can('add_products')
                 <div class="card-footer text-right">
                     <a href="{{ url('admin/products/create') }}" class="btn btn-primary">Add New</a>
                 </div>
+                @endcan
+
             </div>
         </div>
         <div class="col-lg-12">
@@ -75,9 +81,4 @@
 @endsection
 
 @section('unused')
-<script type="text/javascript">
-    $('#button').click( function(){
-        $(".i")
-    });
-</script>
 @endsection

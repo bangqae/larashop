@@ -1,90 +1,90 @@
-+--------+-----------+-------------------------------------------+--------------------+------------------------------------------------------------------------+------------+
-| Domain | Method    | URI                                       | Name               | Action                                                                 | Middleware |
-+--------+-----------+-------------------------------------------+--------------------+------------------------------------------------------------------------+------------+
-|        | GET|HEAD  | /                                         |                    | Closure                                                                | web        |
-|        | POST      | admin/attributes                          | attributes.store   | App\Http\Controllers\Admin\AttributeController@store                   | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes                          | attributes.index   | App\Http\Controllers\Admin\AttributeController@index                   | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/create                   | attributes.create  | App\Http\Controllers\Admin\AttributeController@create                  | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | POST      | admin/attributes/options/{attributeID}    |                    | App\Http\Controllers\Admin\AttributeController@store_option            | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | PUT       | admin/attributes/options/{optionID}       |                    | App\Http\Controllers\Admin\AttributeController@update_option           | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | DELETE    | admin/attributes/options/{optionID}       |                    | App\Http\Controllers\Admin\AttributeController@remove_option           | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/options/{optionID}/edit  |                    | App\Http\Controllers\Admin\AttributeController@edit_option             | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/{attributeID}/add-option |                    | App\Http\Controllers\Admin\AttributeController@add_option              | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/{attributeID}/options    |                    | App\Http\Controllers\Admin\AttributeController@options                 | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/{attribute}              | attributes.show    | App\Http\Controllers\Admin\AttributeController@show                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | PUT|PATCH | admin/attributes/{attribute}              | attributes.update  | App\Http\Controllers\Admin\AttributeController@update                  | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | DELETE    | admin/attributes/{attribute}              | attributes.destroy | App\Http\Controllers\Admin\AttributeController@destroy                 | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/{attribute}/edit         | attributes.edit    | App\Http\Controllers\Admin\AttributeController@edit                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | POST      | admin/categories                          | categories.store   | App\Http\Controllers\Admin\CategoryController@store                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/categories                          | categories.index   | App\Http\Controllers\Admin\CategoryController@index                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/categories/create                   | categories.create  | App\Http\Controllers\Admin\CategoryController@create                   | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/categories/{category}               | categories.show    | App\Http\Controllers\Admin\CategoryController@show                     | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | DELETE    | admin/categories/{category}               | categories.destroy | App\Http\Controllers\Admin\CategoryController@destroy                  | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | PUT|PATCH | admin/categories/{category}               | categories.update  | App\Http\Controllers\Admin\CategoryController@update                   | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/categories/{category}/edit          | categories.edit    | App\Http\Controllers\Admin\CategoryController@edit                     | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/dashboard                           |                    | App\Http\Controllers\Admin\DashboardController@index                   | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | POST      | admin/products                            | products.store     | App\Http\Controllers\Admin\ProductController@store                     | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/products                            | products.index     | App\Http\Controllers\Admin\ProductController@index                     | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/products/create                     | products.create    | App\Http\Controllers\Admin\ProductController@create                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | DELETE    | admin/products/images/{imageID}           |                    | App\Http\Controllers\Admin\ProductController@remove_image              | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | POST      | admin/products/images/{productID}         |                    | App\Http\Controllers\Admin\ProductController@upload_image              | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/products/{productID}/add-image      |                    | App\Http\Controllers\Admin\ProductController@add_image                 | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/products/{productID}/images         |                    | App\Http\Controllers\Admin\ProductController@images                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | PUT|PATCH | admin/products/{product}                  | products.update    | App\Http\Controllers\Admin\ProductController@update                    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/products/{product}                  | products.show      | App\Http\Controllers\Admin\ProductController@show                      | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | DELETE    | admin/products/{product}                  | products.destroy   | App\Http\Controllers\Admin\ProductController@destroy                   | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | admin/products/{product}/edit             | products.edit      | App\Http\Controllers\Admin\ProductController@edit                      | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | api/user                                  |                    | Closure                                                                | api        |
-|        |           |                                           |                    |                                                                        | auth:api   |
-|        | GET|HEAD  | home                                      | home               | App\Http\Controllers\HomeController@index                              | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | GET|HEAD  | login                                     | login              | App\Http\Controllers\Auth\LoginController@showLoginForm                | web        |
-|        |           |                                           |                    |                                                                        | guest      |
-|        | POST      | login                                     |                    | App\Http\Controllers\Auth\LoginController@login                        | web        |
-|        |           |                                           |                    |                                                                        | guest      |
-|        | POST      | logout                                    | logout             | App\Http\Controllers\Auth\LoginController@logout                       | web        |
-|        | GET|HEAD  | password/confirm                          | password.confirm   | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | POST      | password/confirm                          |                    | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web        |
-|        |           |                                           |                    |                                                                        | auth       |
-|        | POST      | password/email                            | password.email     | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web        |
-|        | GET|HEAD  | password/reset                            | password.request   | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web        |
-|        | POST      | password/reset                            | password.update    | App\Http\Controllers\Auth\ResetPasswordController@reset                | web        |
-|        | GET|HEAD  | password/reset/{token}                    | password.reset     | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web        |
-|        | GET|HEAD  | register                                  | register           | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web        |
-|        |           |                                           |                    |                                                                        | guest      |
-|        | POST      | register                                  |                    | App\Http\Controllers\Auth\RegisterController@register                  | web        |
-|        |           |                                           |                    |                                                                        | guest      |
-+--------+-----------+-------------------------------------------+--------------------+------------------------------------------------------------------------+------------+
++--------+-----------+-------------------------------------------+---------------------------+------------------------------------------------------------------------+------------+
+| Domain | Method    | URI                                       | Name                      | Action                                                                 | Middleware |
++--------+-----------+-------------------------------------------+---------------------------+------------------------------------------------------------------------+------------+
+|        | GET|HEAD  | /                                         |                           | Closure                                                                | web        |
+|        | POST      | admin/attributes                          | attributes.store          | App\Http\Controllers\Admin\AttributeController@store                   | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes                          | attributes.index          | App\Http\Controllers\Admin\AttributeController@index                   | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes/create                   | attributes.create         | App\Http\Controllers\Admin\AttributeController@create                  | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/attributes/options/{attributeID}    | attributes.store_option   | App\Http\Controllers\Admin\AttributeController@store_option            | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | PUT       | admin/attributes/options/{optionID}       | attributes.update_options | App\Http\Controllers\Admin\AttributeController@update_option           | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/attributes/options/{optionID}       | attributes.remove_option  | App\Http\Controllers\Admin\AttributeController@remove_option           | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes/options/{optionID}/edit  | attributes.edit_option    | App\Http\Controllers\Admin\AttributeController@edit_option             | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes/{attributeID}/add-option | attributes.add_option     | App\Http\Controllers\Admin\AttributeController@add_option              | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes/{attributeID}/options    | attributes.options        | App\Http\Controllers\Admin\AttributeController@options                 | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes/{attribute}              | attributes.show           | App\Http\Controllers\Admin\AttributeController@show                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | PUT|PATCH | admin/attributes/{attribute}              | attributes.update         | App\Http\Controllers\Admin\AttributeController@update                  | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/attributes/{attribute}              | attributes.destroy        | App\Http\Controllers\Admin\AttributeController@destroy                 | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/attributes/{attribute}/edit         | attributes.edit           | App\Http\Controllers\Admin\AttributeController@edit                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/categories                          | categories.store          | App\Http\Controllers\Admin\CategoryController@store                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/categories                          | categories.index          | App\Http\Controllers\Admin\CategoryController@index                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/categories/create                   | categories.create         | App\Http\Controllers\Admin\CategoryController@create                   | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/categories/{category}               | categories.show           | App\Http\Controllers\Admin\CategoryController@show                     | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/categories/{category}               | categories.destroy        | App\Http\Controllers\Admin\CategoryController@destroy                  | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | PUT|PATCH | admin/categories/{category}               | categories.update         | App\Http\Controllers\Admin\CategoryController@update                   | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/categories/{category}/edit          | categories.edit           | App\Http\Controllers\Admin\CategoryController@edit                     | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/dashboard                           | dashboard.index           | App\Http\Controllers\Admin\DashboardController@index                   | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/products                            | products.store            | App\Http\Controllers\Admin\ProductController@store                     | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/products                            | products.index            | App\Http\Controllers\Admin\ProductController@index                     | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/products/create                     | products.create           | App\Http\Controllers\Admin\ProductController@create                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/products/images/{imageID}           | products.remove_image     | App\Http\Controllers\Admin\ProductController@remove_image              | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/products/images/{productID}         | products.upload_image     | App\Http\Controllers\Admin\ProductController@upload_image              | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/products/{productID}/add-image      | products.add_image        | App\Http\Controllers\Admin\ProductController@add_image                 | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/products/{productID}/images         | products.images           | App\Http\Controllers\Admin\ProductController@images                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | PUT|PATCH | admin/products/{product}                  | products.update           | App\Http\Controllers\Admin\ProductController@update                    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/products/{product}                  | products.show             | App\Http\Controllers\Admin\ProductController@show                      | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/products/{product}                  | products.destroy          | App\Http\Controllers\Admin\ProductController@destroy                   | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/products/{product}/edit             | products.edit             | App\Http\Controllers\Admin\ProductController@edit                      | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | api/user                                  |                           | Closure                                                                | api        |
+|        |           |                                           |                           |                                                                        | auth:api   |
+|        | GET|HEAD  | home                                      | home                      | App\Http\Controllers\HomeController@index                              | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | login                                     | login                     | App\Http\Controllers\Auth\LoginController@showLoginForm                | web        |
+|        |           |                                           |                           |                                                                        | guest      |
+|        | POST      | login                                     |                           | App\Http\Controllers\Auth\LoginController@login                        | web        |
+|        |           |                                           |                           |                                                                        | guest      |
+|        | POST      | logout                                    | logout                    | App\Http\Controllers\Auth\LoginController@logout                       | web        |
+|        | GET|HEAD  | password/confirm                          | password.confirm          | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | password/confirm                          |                           | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | password/email                            | password.email            | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web        |
+|        | GET|HEAD  | password/reset                            | password.request          | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web        |
+|        | POST      | password/reset                            | password.update           | App\Http\Controllers\Auth\ResetPasswordController@reset                | web        |
+|        | GET|HEAD  | password/reset/{token}                    | password.reset            | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web        |
+|        | GET|HEAD  | register                                  | register                  | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web        |
+|        |           |                                           |                           |                                                                        | guest      |
+|        | POST      | register                                  |                           | App\Http\Controllers\Auth\RegisterController@register                  | web        |
+|        |           |                                           |                           |                                                                        | guest      |
++--------+-----------+-------------------------------------------+---------------------------+------------------------------------------------------------------------+------------+

@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Str;
-use Session;
+// use Str;
+// use Session;
+
+use App\Authorizable;
 
 use App\Models\Category;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
-// use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
+    use Authorizable;
+
     /**
      * Display a listing of the resource.
      *
