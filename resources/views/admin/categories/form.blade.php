@@ -29,10 +29,11 @@ $formTitle = !empty($category) ? 'Update' : 'New'
                     </div>
                     <div class="form-group">
                         {!! Form::label('parent_id', 'Parent') !!}
-                        {!! General::selectMultiLevel('parent_id', $categories, ['class' => 'form-control',
-                        'selected' => 
-                        !empty(old('parent_id')) ? old('parent_id') : (
-                        !empty($category['parent_id']) ? $category['parent_id'] : ''),
+                        {!! General::selectMultiLevel('parent_id', $categories,
+                        ['class' => 'form-control',
+                        'selected' =>
+                        !empty(old('parent_id')) ? old('parent_id') :
+                        (!empty($category['parent_id']) ? $category['parent_id'] : ''),
                         'placeholder' => '---Choose Category---' ]) !!}
                     </div>
                     <div class="form-footer pt-5 border-top">

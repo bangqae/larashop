@@ -20,33 +20,33 @@
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/attributes/{attributeID}/options    | attributes.options        | App\Http\Controllers\Admin\AttributeController@options                 | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/{attribute}              | attributes.show           | App\Http\Controllers\Admin\AttributeController@show                    | web        |
-|        |           |                                           |                           |                                                                        | auth       |
 |        | PUT|PATCH | admin/attributes/{attribute}              | attributes.update         | App\Http\Controllers\Admin\AttributeController@update                  | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | DELETE    | admin/attributes/{attribute}              | attributes.destroy        | App\Http\Controllers\Admin\AttributeController@destroy                 | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | GET|HEAD  | admin/attributes/{attribute}/edit         | attributes.edit           | App\Http\Controllers\Admin\AttributeController@edit                    | web        |
+|        | GET|HEAD  | admin/attributes/{attribute}              | attributes.show           | App\Http\Controllers\Admin\AttributeController@show                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | POST      | admin/categories                          | categories.store          | App\Http\Controllers\Admin\CategoryController@store                    | web        |
+|        | GET|HEAD  | admin/attributes/{attribute}/edit         | attributes.edit           | App\Http\Controllers\Admin\AttributeController@edit                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/categories                          | categories.index          | App\Http\Controllers\Admin\CategoryController@index                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | GET|HEAD  | admin/categories/create                   | categories.create         | App\Http\Controllers\Admin\CategoryController@create                   | web        |
+|        | POST      | admin/categories                          | categories.store          | App\Http\Controllers\Admin\CategoryController@store                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | GET|HEAD  | admin/categories/{category}               | categories.show           | App\Http\Controllers\Admin\CategoryController@show                     | web        |
+|        | GET|HEAD  | admin/categories/create                   | categories.create         | App\Http\Controllers\Admin\CategoryController@create                   | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | DELETE    | admin/categories/{category}               | categories.destroy        | App\Http\Controllers\Admin\CategoryController@destroy                  | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | PUT|PATCH | admin/categories/{category}               | categories.update         | App\Http\Controllers\Admin\CategoryController@update                   | web        |
 |        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/categories/{category}               | categories.show           | App\Http\Controllers\Admin\CategoryController@show                     | web        |
+|        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/categories/{category}/edit          | categories.edit           | App\Http\Controllers\Admin\CategoryController@edit                     | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/dashboard                           | dashboard.index           | App\Http\Controllers\Admin\DashboardController@index                   | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | POST      | admin/products                            | products.store            | App\Http\Controllers\Admin\ProductController@store                     | web        |
-|        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/products                            | products.index            | App\Http\Controllers\Admin\ProductController@index                     | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/products                            | products.store            | App\Http\Controllers\Admin\ProductController@store                     | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/products/create                     | products.create           | App\Http\Controllers\Admin\ProductController@create                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
@@ -58,13 +58,41 @@
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/products/{productID}/images         | products.images           | App\Http\Controllers\Admin\ProductController@images                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | PUT|PATCH | admin/products/{product}                  | products.update           | App\Http\Controllers\Admin\ProductController@update                    | web        |
+|        | DELETE    | admin/products/{product}                  | products.destroy          | App\Http\Controllers\Admin\ProductController@destroy                   | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/products/{product}                  | products.show             | App\Http\Controllers\Admin\ProductController@show                      | web        |
 |        |           |                                           |                           |                                                                        | auth       |
-|        | DELETE    | admin/products/{product}                  | products.destroy          | App\Http\Controllers\Admin\ProductController@destroy                   | web        |
+|        | PUT|PATCH | admin/products/{product}                  | products.update           | App\Http\Controllers\Admin\ProductController@update                    | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | admin/products/{product}/edit             | products.edit             | App\Http\Controllers\Admin\ProductController@edit                      | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/roles                               | roles.index               | App\Http\Controllers\Admin\RoleController@index                        | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/roles                               | roles.store               | App\Http\Controllers\Admin\RoleController@store                        | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/roles/create                        | roles.create              | App\Http\Controllers\Admin\RoleController@create                       | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | PUT|PATCH | admin/roles/{role}                        | roles.update              | App\Http\Controllers\Admin\RoleController@update                       | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/roles/{role}                        | roles.destroy             | App\Http\Controllers\Admin\RoleController@destroy                      | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/roles/{role}                        | roles.show                | App\Http\Controllers\Admin\RoleController@show                         | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/roles/{role}/edit                   | roles.edit                | App\Http\Controllers\Admin\RoleController@edit                         | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/users                               | users.index               | App\Http\Controllers\Admin\UserController@index                        | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | POST      | admin/users                               | users.store               | App\Http\Controllers\Admin\UserController@store                        | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/users/create                        | users.create              | App\Http\Controllers\Admin\UserController@create                       | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | DELETE    | admin/users/{user}                        | users.destroy             | App\Http\Controllers\Admin\UserController@destroy                      | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/users/{user}                        | users.show                | App\Http\Controllers\Admin\UserController@show                         | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | PUT|PATCH | admin/users/{user}                        | users.update              | App\Http\Controllers\Admin\UserController@update                       | web        |
+|        |           |                                           |                           |                                                                        | auth       |
+|        | GET|HEAD  | admin/users/{user}/edit                   | users.edit                | App\Http\Controllers\Admin\UserController@edit                         | web        |
 |        |           |                                           |                           |                                                                        | auth       |
 |        | GET|HEAD  | api/user                                  |                           | Closure                                                                | api        |
 |        |           |                                           |                           |                                                                        | auth:api   |

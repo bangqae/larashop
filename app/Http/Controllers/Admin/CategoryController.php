@@ -40,7 +40,6 @@ class CategoryController extends Controller
     {
         $categories = Category::orderBy('name', 'ASC')->get();
         $this->data['categories'] = $categories->toArray();
-        // $this->data['category'] = null;
 
         return view('admin.categories.form', $this->data);
     }
@@ -55,7 +54,7 @@ class CategoryController extends Controller
     {
         $params = $request->except('_token');
         $params['slug'] = Str::slug($params['name']);
-        $params['parent_id'] = (int)$params['parent_id'];
+        $params['parent_id'] = (int)$params['parent_id']; // Turn null to 0
 
         if (Category::create($params)) {
             Session::flash('success', 'Category has been saved!');
@@ -83,13 +82,12 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::orderBy('name', 'ASC')->get();
         $category = Category::findOrFail($id);
+        $categories = Category::where('id', '!=', $id)->orderBy('name', 'ASC')->get();
         
-        $this->data['categories'] = $categories->toArray();
         $this->data['category'] = $category;
-        // dd($this->data);
-
+        $this->data['categories'] = $categories->toArray();
+        
         return view('admin.categories.form', $this->data);
     }
 
@@ -110,6 +108,7 @@ class CategoryController extends Controller
         }
 
         $category = Category::findOrFail($id);
+
         if ($category->update($params)) {
             Session::flash('success','Category has been updated!');
         }

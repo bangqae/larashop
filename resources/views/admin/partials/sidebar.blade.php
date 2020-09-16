@@ -18,15 +18,19 @@
 
       <!-- sidebar menu -->
       <ul class="nav sidebar-inner" id="sidebar-menu">
-        <li class="has-sub active expand">
+        {{-- Catalog --}}
+        <li class="has-sub">
+        {{-- <li class="has-sub active expand"> --}}
           <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#dashboard"
             aria-expanded="false" aria-controls="dashboard">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span class="nav-text">Catalog</span> <b class="caret"></b>
           </a>
-          <ul class="collapse show" id="dashboard" data-parent="#sidebar-menu">
+          <ul class="collapse" id="dashboard" data-parent="#sidebar-menu">
+          {{-- <ul class="collapse show" id="dashboard" data-parent="#sidebar-menu"> --}}
             <div class="sub-menu">
-              <li class="active">
+              <li>
+              {{-- <li class="active"> --}}
                 <a class="sidenav-item-link" href="{{ url('admin/products')}}">
                   <span class="nav-text">Products</span>
                 </a>
@@ -44,7 +48,33 @@
             </div>
           </ul>
         </li>
+
+        {{-- Users & Roles --}}
+        <li class="has-sub active expand">
+          <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#auth"
+            aria-expanded="false" aria-controls="dashboard">
+            <i class="mdi mdi-account-multiple-outline"></i>
+            <span class="nav-text">Users &amp; Roles</span> <b class="caret"></b>
+          </a>
+          <ul class="collapse show" id="auth" data-parent="#sidebar-menu">
+            <div class="sub-menu">
+              <li class="active">
+                <a class="sidenav-item-link" href="{{ url('admin/users')}}">
+                  <span class="nav-text">Users</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidenav-item-link" href="{{ url('admin/roles')}}">
+                  <span class="nav-text">Roles</span>
+                </a>
+              </li>
+            </div>
+          </ul>
+        </li>
+
       </ul>
+      <!-- End of sidebar menu -->
+      
     </div>
   </div>
 </aside>
