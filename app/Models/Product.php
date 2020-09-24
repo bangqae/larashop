@@ -41,7 +41,7 @@ class Product extends Model
 
     public function variants() // Jamak
     {
-        return $this->hasMany('App\Models\Product', 'parent_id'); // 1 parent can have many variant
+        return $this->hasMany('App\Models\Product', 'parent_id')->orderBy('price', 'ASC'); // 1 parent can have many variant
     }
 
     public function parent() // Tunggal
@@ -56,7 +56,7 @@ class Product extends Model
 
     public function productImages() // Jamak
     {
-        return $this->hasMany('App\Models\ProductImage'); // 1 to many
+        return $this->hasMany('App\Models\ProductImage')->orderBy('id', 'DESC'); // 1 to many
     }
 
     public static function statuses()
@@ -81,5 +81,17 @@ class Product extends Model
             'simple' => 'Simple',
             'configurable' => 'Configurable',
         ];
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1)
+            ->where('parent_id', NULL)
+            ->orderBy('created_at', 'DESC');
+    }
+
+    function price_label()
+    {
+        return ($this->variants->count() > 0) ? $this->variants->first()->price : $this->price;
     }
 }

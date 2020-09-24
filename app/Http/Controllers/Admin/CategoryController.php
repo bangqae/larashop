@@ -13,11 +13,21 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\Controller;
+
 use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
     use Authorizable;
+
+    /** Method khusus yang akan dieksekusi pada saat pembuatan objek (instance). */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->data['currentAdminMenu'] = 'catalog';
+        $this->data['currentAdminSubMenu'] = 'category';
+    }
 
     /**
      * Display a listing of the resource.

@@ -18,8 +18,14 @@ class AttributeController extends Controller
 {
     use Authorizable;
     
+    /** Method khusus yang akan dieksekusi pada saat pembuatan objek (instance). */
     public function __construct()
     {
+        parent::__construct();
+
+        $this->data['currentAdminMenu'] = 'catalog';
+        $this->data['currentAdminSubMenu'] = 'attribute';
+
         $this->data['types'] = Attribute::types();
         $this->data['booleanOptions'] = Attribute::booleanOptions();
         $this->data['validations'] = Attribute::validations();

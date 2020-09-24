@@ -45,6 +45,7 @@
                 </div>
                 <div class="card-footer text-right">
                     <a href="{{ url('admin/products/'.$productID.'/add-image') }}" class="btn btn-primary">Add New</a>
+                    <a href="{{ url('admin/products') }}" class="btn btn-secondary btn-default">Back</a>
                 </div>
             </div>
         </div>

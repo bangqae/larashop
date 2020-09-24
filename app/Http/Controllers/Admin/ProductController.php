@@ -26,9 +26,14 @@ class ProductController extends Controller
 {
     use Authorizable;
 
-    /** Constructor, just static array from Product */
+    /** Method khusus yang akan dieksekusi pada saat pembuatan objek (instance). */
     public function __construct()
     {
+        parent::__construct();
+
+        $this->data['currentAdminMenu'] = 'catalog';
+        $this->data['currentAdminSubMenu'] = 'product';
+
         $this->data['statuses'] = Product::statuses();
         $this->data['types'] = Product::types();
     }
