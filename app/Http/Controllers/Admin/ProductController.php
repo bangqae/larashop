@@ -212,13 +212,13 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        if (empty($id)) { // Kalo $id-nya null, ubah jadi add
+        if (empty($id)) { // Kalo $id-nya null, arahkan ke method create
             return redirect('admin/products/create');
         }
         
         $product = Product::findOrFail($id);
         $categories = Category::orderBy('name', 'ASC')->get();
-        // Menambahkan attribute baru ke original
+        // Menambahkan attribute baru (qty) ke original
         // Attribute data, bukan color,size,etc
         // Cek dengan ddump
         $product->qty = isset($product->productInventory) ? $product->productInventory->qty : null;

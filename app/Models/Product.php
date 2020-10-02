@@ -51,7 +51,7 @@ class Product extends Model
 
     public function productAttributeValues() // Jamak
     {
-        return $this->hasMany('App\Models\ProductAttributeValue'); // 1 to many
+        return $this->hasMany('App\Models\ProductAttributeValue', 'parent_product_id'); // 1 to many
     }
 
     public function productImages() // Jamak
@@ -86,8 +86,7 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 1)
-            ->where('parent_id', NULL)
-            ->orderBy('created_at', 'DESC');
+            ->where('parent_id', NULL);
     }
 
     function price_label()
