@@ -172,7 +172,7 @@
                 </div>
                 <div class="furniture-search">
                     <form action="{{ url('products') }}" method="GET">
-                        <input placeholder="I am Searching for . . ." type="text" name="q" value="{{ $q }}"> {{-- Var q must have value --}}
+                        <input placeholder="I am Searching for . . ." type="text" name="q" value="{{ $q ?? '' }}"> {{-- Var q must have value --}}
                         <button>
                             <i class="ti-search"></i>
                         </button>

@@ -55,6 +55,17 @@ class ProductController extends Controller
     {
         $products = Product::active();
         
+        $products = $this->searchProducts($products, $request);
+        $products = $this->filterProductsByPriceRange($products, $request);
+        $products = $this->filterProductsByAttribute($products, $request);
+        $products = $this->sortProducts($products, $request);
+        
+        $this->data['products'] = $products->paginate(9);
+        return $this->load_theme('products.index', $this->data);
+    }
+
+    private function searchProducts($products, $request)
+    {
         if ($q = $request->query('q')) {
             $q = str_replace('-', ' ', Str::slug($q));
             // var_dump($q);exit;
@@ -75,6 +86,11 @@ class ProductController extends Controller
             });
         }
 
+        return $products;
+    }
+
+    private function filterProductsByPriceRange($products, $request)
+    {
         $lowPrice = null;
         $highPrice = null;
 
@@ -97,6 +113,11 @@ class ProductController extends Controller
             }
         }
 
+        return $products;
+    }
+
+    private function filterProductsByAttribute($products, $request)
+    {
         if ($attributOptionID = $request->query('option')) {
             $attributOption = AttributeOption::findOrFail($attributOptionID);
             
@@ -106,6 +127,11 @@ class ProductController extends Controller
             });
         }
 
+        return $products;
+    }
+
+    private function sortProducts($products, $request)
+    {
         if ($sort = preg_replace('/\s+/', '', $request->query('sort'))) {
             // var_dump($sort);exit;
             $avaiableSorts = ['price', 'created_at'];
@@ -122,8 +148,7 @@ class ProductController extends Controller
             $this->data['selectedSort'] = url('products?sort='. $sort);
         }
 
-        $this->data['products'] = $products->paginate(9);
-        return $this->load_theme('products.index', $this->data);
+        return $products;
     }
 
     /**

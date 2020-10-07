@@ -19,6 +19,11 @@ Route::get('/', 'HomeController@index');
 Route::get('/products', 'ProductController@index');
 Route::get('/product/{slug}', 'ProductController@show');
 
+Route::get('/carts', 'CartController@index');
+Route::post('/carts', 'CartController@store');
+Route::post('/carts/update', 'CartController@update');
+Route::get('/carts/remove/{slug}', 'CartController@destroy');
+
 Route::group(
     ['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth']],
     function () {

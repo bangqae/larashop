@@ -1,6 +1,6 @@
 {{-- included in header --}}
 <div class="header-cart">
-    <a class="icon-cart-furniture" href="#">
+    <a class="icon-cart-furniture" href="{{ url('carts') }}">
         <i class="ti-shopping-cart"></i>
         <span class="shop-count-furniture green">02</span>
     </a>
