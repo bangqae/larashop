@@ -14,8 +14,6 @@ class HomeController extends Controller
     public function __construct()
     {
         parent::__construct();
-        // Not yet
-        // $this->data['q'] = null;
     }
 
     /**
@@ -26,7 +24,5 @@ class HomeController extends Controller
     public function index()
     {
         return $this->load_theme('home');
-        // Not yet
-        // return $this->load_theme('home', $this->data);
     }
 }

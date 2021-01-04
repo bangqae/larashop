@@ -7537,7 +7537,8 @@ h5.panel-title {
 }
 .select-option-part select {
     -moz-appearance: none;
-    background: rgba(0, 0, 0, 0) url("../../assets/img/icon-img/4.png") no-repeat scroll right 20px center;
+    /* background: rgba(0, 0, 0, 0) url("../../assets/img/icon-img/4.png") no-repeat scroll right 20px center; */
+    background: rgba(0, 0, 0, 0);
     border: 1px solid #dcdcdc;
     box-shadow: none;
     color: #828282;
