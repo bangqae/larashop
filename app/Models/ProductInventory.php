@@ -15,4 +15,12 @@ class ProductInventory extends Model
     {
         return $this->belongsTo('App\Models\Product'); // 1 data in here belongs to 1 data in products
     }
+
+    public static function reduceStock($productId, $qty)
+    {
+        $inventory = self::where('product_id', $productId)->firstOrFail();
+        $inventory->qty = $inventory->qty - $qty;
+        $inventory->save();
+        // print_r($inventory->toArray());exit;
+    }
 }

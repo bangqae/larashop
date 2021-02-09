@@ -31,7 +31,7 @@
     </div>
     <div class="col-md-2">
         <div class="form-group">
-            {!! Form::label('weight', 'Weight') !!}
+            {!! Form::label('weight', 'Weight (gr)') !!}
             {!! Form::text('variants['. $variant->id .'][weight]', $variant->weight, ['class' => 'form-control',
             'required' => true]) !!}
         </div>
