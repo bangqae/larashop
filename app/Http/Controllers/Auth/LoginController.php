@@ -44,6 +44,6 @@ class LoginController extends Controller
             return view('auth.authenticate');
         }
 
-        return $this->load_theme('auth.login');
+        return $this->loadTheme('auth.login');
     }
 }

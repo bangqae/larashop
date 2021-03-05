@@ -25,6 +25,6 @@ class ForgotPasswordController extends Controller
         if (property_exists($this, 'linkRequestView')) {
             return view($this->linkRequestView);
         }
-        return $this->load_theme('auth.password.email');
+        return $this->loadTheme('auth.password.email');
     }
 }

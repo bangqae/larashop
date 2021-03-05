@@ -78,6 +78,6 @@ class RegisterController extends Controller
         if (property_exists($this, 'registerView')) {
             return view($this->registerView);
         }
-        return $this->load_theme('auth.register');
+        return $this->loadTheme('auth.register');
     }
 }

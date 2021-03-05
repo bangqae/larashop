@@ -23,6 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return $this->load_theme('home');
+        return $this->loadTheme('home');
     }
 }

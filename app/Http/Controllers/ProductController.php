@@ -61,7 +61,7 @@ class ProductController extends Controller
         $products = $this->sortProducts($products, $request);
         
         $this->data['products'] = $products->paginate(9);
-        return $this->load_theme('products.index', $this->data);
+        return $this->loadTheme('products.index', $this->data);
     }
 
     private function searchProducts($products, $request)
@@ -172,6 +172,6 @@ class ProductController extends Controller
 
         $this->data['product'] = $product;
 
-        return $this->load_theme('products.show', $this->data);
+        return $this->loadTheme('products.show', $this->data);
     }
 }

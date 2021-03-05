@@ -38,6 +38,6 @@ class ResetPasswordController extends Controller
         $this->data['email'] = $request->input('email');
         $this->data['token'] = $token;
 
-        return $this->load_theme('auth.password.reset', $this->data);
+        return $this->loadTheme('auth.password.reset', $this->data);
     }
 }

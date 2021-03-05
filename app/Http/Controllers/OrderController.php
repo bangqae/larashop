@@ -47,7 +47,7 @@ class OrderController extends Controller
         $this->data['cities'] = isset(\Auth::user()->province_id) ? $this->getCities(\Auth::user()->province_id) : [];
         $this->data['user'] = \Auth::user();
 
-        return $this->load_theme('orders.checkout', $this->data);
+        return $this->loadTheme('orders.checkout', $this->data);
     }
 
     /**
@@ -280,13 +280,16 @@ class OrderController extends Controller
     {
         $params = $request->except('_token');
 
-        $order = \DB::transaction(function () use ($params) {
-            $order = $this->_saveOrder($params);
-            $this->_saveOrderItems($order);
-            $this->_saveShipment($order, $params);
+        $order = \DB::transaction(
+            function () use ($params) {
+                $order = $this->_saveOrder($params);
+                $this->_saveOrderItems($order);
+                $this->_generatePaymentToken($order);
+                $this->_saveShipment($order, $params);
 
-            return $order;
-        });
+                return $order;
+            }
+        );
 
         if ($order) {
             \Cart::clear();
@@ -297,6 +300,40 @@ class OrderController extends Controller
         }
 
         return redirect('orders/checkout');
+    }
+
+    private function _generatePaymentToken($order)
+    {
+        $this->initPaymentGateway();
+
+        $customerDetails = [
+            'first_name' => $order->customer_first_name,
+            'last_name' => $order->customer_last_name,
+            'email' => $order->customer_email,
+            'phone' => $order->customer_phone,
+        ];
+
+        $params = [
+            'enable_payments' => \App\Models\Payment::PAYMENT_CHANNELS,
+            'transaction_details' =>  [
+                'order_id' => $order->code,
+                'gross_amount' => $order->grand_total,
+            ],
+            'customer_details' => $customerDetails,
+            'expiry' => [
+                'start_time' => date('Y-m-d H:i:s T'),
+                'unit' => \App\Models\Payment::EXPIRY_UNIT,
+                'duration' => \App\Models\Payment::EXPIRY_DURATION,
+            ],
+        ];
+
+        $snap = \Midtrans\Snap::createTransaction($params);
+        // dd($snap);exit;
+        if ($snap->token) {
+            $order->payment_token = $snap->token;
+            $order->payment_url = $snap->redirect_url;
+            $order->save();
+        }
     }
 
     /**
@@ -351,7 +388,7 @@ class OrderController extends Controller
             'shipping_service_name' => $selectedShipping['service'],
         ];
 
-        return Order::create($orderParams);
+        return Order::create($orderParams); // Menggunakan return karena output dari method ini disimpan juga di $order di doCheckout
     }
 
     /**
@@ -469,6 +506,6 @@ class OrderController extends Controller
                                 ->where('user_id', \Auth::user()->id)
                                 ->firstOrFail();
 
-        return $this->load_theme('orders/received', $this->data);
+        return $this->loadTheme('orders/received', $this->data);
     }
 }

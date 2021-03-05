@@ -22,7 +22,7 @@ class CartController extends Controller
         $items = \Cart::getContent();
         $this->data['items'] = $items;
 
-        return $this->load_theme('carts.index', $this->data);
+        return $this->loadTheme('carts.index', $this->data);
         // return $items;
     }
 

@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "laravelcollective/html": "^6.1",
+        "midtrans/midtrans-php": "^2.3",
         "spatie/laravel-permission": "^3.16"
     },
     "require-dev": {
