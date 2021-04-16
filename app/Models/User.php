@@ -18,9 +18,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'email', 'password',
         'first_name', 'last_name', 'email', 'phone', 'password', 'company', 'address1', 'address2', 'province_id', 'city_id', 'postcode',
     ];
+
+    protected $appends = ['user_full_name'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -44,4 +46,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Model\Product'); // Relasi one to many, tapi di model Product : one to one
     }
+
+    /**
+	 * Add full_name custom attribute to order object
+	 *
+	 * @return boolean
+	 */
+	public function getUserFullNameAttribute()
+	{
+		return "{$this->first_name} {$this->last_name}";
+	}
 }

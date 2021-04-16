@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductAttributeValue extends Model
 {
     protected $fillable = [
+        'parent_product_id',
         'product_id',
         'attribute_id',
         'text_value',
@@ -34,9 +35,9 @@ class ProductAttributeValue extends Model
         $attribute = Attribute::where('code', $attributeCode)->first();
 
         $attributeOptions = ProductAttributeValue::where('attribute_id', $attribute->id)
-                            ->where('product_id', $productVariantIDs)
+                            ->whereIn('product_id', $productVariantIDs)
                             ->get();
-        
+
         return $attributeOptions;
     }
 }

@@ -22,7 +22,7 @@ Route::get('/product/{slug}', 'ProductController@show');
 Route::get('/carts', 'CartController@index');
 Route::post('/carts', 'CartController@store');
 Route::post('/carts/update', 'CartController@update');
-Route::get('/carts/remove/{slug}', 'CartController@destroy');
+Route::get('/carts/remove/{cartID}', 'CartController@destroy');
 
 Route::get('orders/checkout', 'OrderController@checkout');
 Route::post('orders/checkout', 'OrderController@doCheckout');
@@ -65,6 +65,15 @@ Route::group(
 
         Route::resource('roles', 'RoleController');
         Route::resource('users', 'UserController');
+
+        Route::get('orders/trashed', 'OrderController@trashed');
+		Route::get('orders/restore/{orderID}', 'OrderController@restore');
+		Route::resource('orders', 'OrderController');
+		Route::get('orders/{orderID}/cancel', 'OrderController@cancel');
+		Route::put('orders/cancel/{orderID}', 'OrderController@doCancel');
+		Route::post('orders/complete/{orderID}', 'OrderController@doComplete');
+
+		Route::resource('shipments', 'ShipmentController');
     }
 );
 

@@ -23,7 +23,6 @@ class CartController extends Controller
         $this->data['items'] = $items;
 
         return $this->loadTheme('carts.index', $this->data);
-        // return $items;
     }
 
     /**
@@ -35,7 +34,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $params = $request->except('_token');
-        // var_dump($params);
+
         $product = Product::findOrFail($params['product_id']);
         $slug = $product->slug;
 
@@ -65,7 +64,7 @@ class CartController extends Controller
 									'color_code' => 'color',
 									'color_value' => $params['color'],
 								])->firstOrFail();
-            // var_dump($product->id);exit;
+
 			$attributes['size'] = $params['size'];
 			$attributes['color'] = $params['color'];
         }

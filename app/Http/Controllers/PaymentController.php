@@ -16,9 +16,9 @@ class PaymentController extends Controller
 	 *
 	 * @return json
 	 */
-    public function notification(Request $request)
-    {
-        $payload = $request->getContent();
+	public function notification(Request $request)
+	{
+		$payload = $request->getContent();
 		$notification = json_decode($payload);
 
 		$validSignatureKey = hash("sha512", $notification->order_id . $notification->status_code . $notification->gross_amount . env('MIDTRANS_SERVER_KEY'));
@@ -95,7 +95,6 @@ class PaymentController extends Controller
 		];
 
 		$payment = Payment::create($paymentParams);
-        // dd($payment);
 
 		if ($paymentStatus && $payment) {
 			\DB::transaction(
@@ -117,7 +116,7 @@ class PaymentController extends Controller
 		];
 
 		return response($response, 200);
-    }
+	}
 
 	/**
 	 * Show completed payment status
@@ -127,36 +126,50 @@ class PaymentController extends Controller
 	 * @return void
 	 */
 	public function completed(Request $request)
-    {
-        $code = $request->query('order_id');
+	{
+		$code = $request->query('order_id');
 		$order = Order::where('code', $code)->firstOrFail();
-
+		
 		if ($order->payment_status == Order::UNPAID) {
-			return redirect('payment/failed?order_id='. $code);
+			return redirect('payments/failed?order_id='. $code);
 		}
 
-		\Session::flash('success', 'Thank you for completing the payment process!');
+		\Session::flash('success', "Thank you for completing the payment process!");
 
 		return redirect('orders/received/'. $order->id);
-    }
+	}
 
-    public function unfinish(Request $request)
-    {
-        $code = $request->query('order_id');
+	/**
+	 * Show unfinish payment page
+	 *
+	 * @param Request $request payment data
+	 *
+	 * @return void
+	 */
+	public function unfinish(Request $request)
+	{
+		$code = $request->query('order_id');
 		$order = Order::where('code', $code)->firstOrFail();
 
 		\Session::flash('error', "Sorry, we couldn't process your payment.");
 
 		return redirect('orders/received/'. $order->id);
-    }
+	}
 
-    public function failed(Request $request)
-    {
-        $code = $request->query('order_id');
+	/**
+	 * Show failed payment page
+	 *
+	 * @param Request $request payment data
+	 *
+	 * @return void
+	 */
+	public function failed(Request $request)
+	{
+		$code = $request->query('order_id');
 		$order = Order::where('code', $code)->firstOrFail();
 
 		\Session::flash('error', "Sorry, we couldn't process your payment.");
 
 		return redirect('orders/received/'. $order->id);
-    }
+	}
 }

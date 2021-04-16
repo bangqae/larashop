@@ -25,7 +25,7 @@
                         <div class="shop-bar pb-60">
                             <div class="shop-found-selector">
                                 <div class="shop-found">
-                                    <p><span>23</span> Product Found of <span>50</span></p>
+                                    <p><span>{{ count($products) }}</span> Product Found of <span>{{ $products->total() }}</span></p>
                                 </div>
                                 <div class="shop-selector">
                                     <label>Sort By : </label>

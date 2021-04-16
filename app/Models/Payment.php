@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     protected $fillable = [
-        'order_id',
-        'number',
-        'transaction_id',
-        'amount',
-        'method',
-        'status',
-        'token',
-        'payloads',
-        'payment_type',
-        'va_number',
-        'vendor_name',
-        'biller_code',
-        'bill_key',
+		'order_id',
+		'number',
+		'transaction_id',
+		'amount',
+		'method',
+		'status',
+		'token',
+		'payloads',
+		'payment_type',
+		'va_number',
+		'vendor_name',
+		'biller_code',
+		'bill_key',
     ];
 
     public const PAYMENT_CHANNELS = [
@@ -41,16 +41,16 @@ class Payment extends Model
         'shopeepay',
     ];
 
-    public const EXPIRY_DURATION = 7;
-    public const EXPIRY_UNIT = 'days';
+	public const EXPIRY_DURATION = 7;
+	public const EXPIRY_UNIT = 'days';
 
-    public const CHALLENGE = 'challenge';
-    public const SUCCESS = 'success';
-    public const SETTLEMENT = 'settlement';
-    public const PENDING = 'pending';
-    public const DENY = 'deny';
-    public const EXPIRE = 'expire';
-    public const CANCEL = 'cancel';
+	public const CHALLENGE = 'challenge';
+	public const SUCCESS = 'success';
+	public const SETTLEMENT = 'settlement';
+	public const PENDING = 'pending';
+	public const DENY = 'deny';
+	public const EXPIRE = 'expire';
+	public const CANCEL = 'cancel';
 
     public const PAYMENTCODE = 'PAY';
 
@@ -68,12 +68,12 @@ class Payment extends Model
 			->first();
 
 		$lastOrderCode = !empty($lastOrder) ? $lastOrder['last_code'] : null;
-
+		
 		$orderCode = $dateCode . '00001';
 		if ($lastOrderCode) {
 			$lastOrderNumber = str_replace($dateCode, '', $lastOrderCode);
 			$nextOrderNumber = sprintf('%05d', (int)$lastOrderNumber + 1);
-
+			
 			$orderCode = $dateCode . $nextOrderNumber;
 		}
 

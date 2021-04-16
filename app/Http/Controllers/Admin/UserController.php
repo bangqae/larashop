@@ -69,15 +69,17 @@ class UserController extends Controller
 
         $request->merge(['password' => bcrypt($request->get('password'))]);
 
-        DB::transaction(function() use ($request) {
-            if ($user = User::create($request->except('roles', 'permissions'))) {
-                $this->syncPermissions($request, $user);
+        DB::transaction(
+            function() use ($request) {
+                if ($user = User::create($request->except('roles', 'permissions'))) {
+                    $this->syncPermissions($request, $user);
 
-                Session::flash('success', 'User has been created!');
-            } else {
-                Session::flash('error', 'Unable to create user!');
+                    Session::flash('success', 'User has been created!');
+                } else {
+                    Session::flash('error', 'Unable to create user!');
+                }
             }
-        });
+        );
 
         return redirect('admin/users');
     }

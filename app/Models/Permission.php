@@ -38,6 +38,11 @@ class Permission extends \Spatie\Permission\Models\Permission
             'add_attributes',
             'edit_attributes',
             'delete_attributes',
+
+            'view_shipments',
+			'add_shipments',
+			'edit_shipments',
+			'delete_shipments',
         ];
     }
 }

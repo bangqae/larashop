@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    
+    /**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
     public function __construct()
     {
         parent::__construct();
@@ -49,22 +55,32 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request request param
+	 *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $products = Product::active();
         
-        $products = $this->searchProducts($products, $request);
-        $products = $this->filterProductsByPriceRange($products, $request);
-        $products = $this->filterProductsByAttribute($products, $request);
-        $products = $this->sortProducts($products, $request);
+        $products = $this->_searchProducts($products, $request);
+        $products = $this->_filterProductsByPriceRange($products, $request);
+        $products = $this->_filterProductsByAttribute($products, $request);
+        $products = $this->_sortProducts($products, $request);
         
         $this->data['products'] = $products->paginate(9);
         return $this->loadTheme('products.index', $this->data);
     }
 
-    private function searchProducts($products, $request)
+    /**
+	 * Search products
+	 *
+	 * @param array   $products array of products
+	 * @param Request $request  request param
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+    private function _searchProducts($products, $request)
     {
         if ($q = $request->query('q')) {
             $q = str_replace('-', ' ', Str::slug($q));
@@ -81,15 +97,26 @@ class ProductController extends Controller
             $categoryIds = array_merge([$category->id], $childIds);
 
             // print_r($categoryIds);exit;
-            $products = $products->whereHas('categories', function ($query) use ($categoryIds) { // Query categories ke products
-                            $query->whereIn('categories.id', $categoryIds);
-            });
+            $products = $products->whereHas(
+                'categories',
+                function ($query) use ($categoryIds) { // Query categories ke products
+                    $query->whereIn('categories.id', $categoryIds);
+                }
+            );
         }
 
         return $products;
     }
 
-    private function filterProductsByPriceRange($products, $request)
+    /**
+	 * Filter products by price range
+	 *
+	 * @param array   $products array of products
+	 * @param Request $request  request param
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+    private function _filterProductsByPriceRange($products, $request)
     {
         $lowPrice = null;
         $highPrice = null;
@@ -116,21 +143,40 @@ class ProductController extends Controller
         return $products;
     }
 
-    private function filterProductsByAttribute($products, $request)
+    /**
+	 * Filter products by attribute
+	 *
+	 * @param array   $products array of products
+	 * @param Request $request  request param
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+    private function _filterProductsByAttribute($products, $request)
     {
         if ($attributOptionID = $request->query('option')) {
             $attributOption = AttributeOption::findOrFail($attributOptionID);
             
-            $products = $products->whereHas('ProductAttributeValues', function ($query) use ($attributOption) {
-                                    $query->where('attribute_id', $attributOption->attribute_id)
-                                        ->where('text_value', $attributOption->name);
-            });
+            $products = $products->whereHas(
+                'ProductAttributeValues',
+                function ($query) use ($attributOption) {
+                    $query->where('attribute_id', $attributOption->attribute_id)
+                        ->where('text_value', $attributOption->name);
+                }
+            );
         }
 
         return $products;
     }
 
-    private function sortProducts($products, $request)
+    /**
+	 * Sort products
+	 *
+	 * @param array   $products array of products
+	 * @param Request $request  request param
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+    private function _sortProducts($products, $request)
     {
         if ($sort = preg_replace('/\s+/', '', $request->query('sort'))) {
             // var_dump($sort);exit;
@@ -154,7 +200,8 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $slug
+     * @param string $slug product slug
+     * 
      * @return \Illuminate\Http\Response
      */
     public function show($slug)

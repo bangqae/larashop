@@ -11,16 +11,49 @@ class ProductInventory extends Model
         'qty',
     ];
 
+    /**
+	 * Define relationship with the Product
+	 *
+	 * @return void
+	 */
     public function product()
     {
         return $this->belongsTo('App\Models\Product'); // 1 data in here belongs to 1 data in products
     }
 
+    /**
+	 * Reduce stock product
+	 *
+	 * @param int $productId product ID
+	 * @param int $qty       qty product
+	 *
+	 * @return void
+	 */
     public static function reduceStock($productId, $qty)
     {
         $inventory = self::where('product_id', $productId)->firstOrFail();
+
+        if ($inventory->qty < $qty) {
+			$product = Product::findOrFail($productId);
+			throw new \App\Exceptions\OutOfStockException('The product '. $product->sku .' is out of stock');
+		}
+
         $inventory->qty = $inventory->qty - $qty;
         $inventory->save();
-        // print_r($inventory->toArray());exit;
     }
+
+    /**
+	 * Increase stock product
+	 *
+	 * @param int $productId product ID
+	 * @param int $qty       qty product
+	 *
+	 * @return void
+	 */
+	public static function increaseStock($productId, $qty)
+	{
+		$inventory = self::where('product_id', $productId)->firstOrFail();
+		$inventory->qty = $inventory->qty + $qty;
+		$inventory->save();
+	}
 }

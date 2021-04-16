@@ -58,23 +58,23 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name', 'ASC')->get();
-        $configurableAttributes = $this->getConfigurableAttributes(); // Ambil data attribute dari method getConAtts
+        $configurableAttributes = $this->_getConfigurableAttributes(); // Ambil data attribute dari method getConAtts
 
         $this->data['categories'] = $categories->toArray();
         $this->data['product'] = null;
         $this->data['productID'] = 0; // Karena kita hanya menggunakan satu view form,
         $this->data['categoryIDs'] = []; // terdapat beberapa beberapa variabel yang harus diisi
-        $this->data['configurableAttributes'] = $configurableAttributes; // tadi typo
+        $this->data['configurableAttributes'] = $configurableAttributes;
 
         return view('admin.products.form', $this->data);
     }
 
-    private function getConfigurableAttributes() // Method getConAtts
+    private function _getConfigurableAttributes() // Method getConAtts
     {
         return Attribute::where('is_configurable', true)->get(); // Ambil attribute yang configurable
     }
 
-    private function generateAttributeCombinations($arrays) // Method untuk kombinasi attributes, genAttrCombs
+    private function _generateAttributeCombinations($arrays) // Method untuk kombinasi attributes, genAttrCombs
     {
         $result = [[]];
         foreach ($arrays as $property => $property_values) {
@@ -89,7 +89,7 @@ class ProductController extends Controller
         return $result;
     }
 
-    private function convertVariantAsName($variant) // Konversi variant menjadi name product
+    private function _convertVariantAsName($variant) // Konversi variant menjadi name product
     {
         $variantName = '';
 
@@ -105,15 +105,15 @@ class ProductController extends Controller
         return $variantName;
     }
 
-    private function generateProductVariants($product, $params) // Method genPrdVrnts
+    private function _generateProductVariants($product, $params) // Method genPrdVrnts
     {
-        $configurableAttributes = $this->getConfigurableAttributes(); // Ambil data attribute dari method getConAtts
+        $configurableAttributes = $this->_getConfigurableAttributes(); // Ambil data attribute dari method getConAtts
 
         $variantAttributes = [];
         foreach ($configurableAttributes as $attribute) {
             $variantAttributes[$attribute->code] = $params[$attribute->code];
         }
-        $variants = $this->generateAttributeCombinations($variantAttributes); // Panggil method genAttrCombs
+        $variants = $this->_generateAttributeCombinations($variantAttributes); // Panggil method genAttrCombs
 
         if ($variants) {
             foreach ($variants as $variant) {
@@ -129,7 +129,7 @@ class ProductController extends Controller
                     // Ambil nama dari induk yang ditambahkan beberapa karekter,
                     // tapi karena nama kedepannya tidak hanya berdasarkan 2 attribut,
                     // kita buat sebuah logic untuk meng-handle-nya
-                    'name' => $product->name . $this->convertVariantAsName($variant),
+                    'name' => $product->name . $this->_convertVariantAsName($variant),
                 ];
                 // print_r($variantParams);exit;
                 $variantParams['slug'] = Str::slug($variantParams['name']);
@@ -139,17 +139,18 @@ class ProductController extends Controller
                 $categoryIds = !empty($params['category_ids']) ? $params['category_ids'] : [];
                 $newProductVariant->categories()->sync($categoryIds);
 
-                $this->saveProductAttributeValues($newProductVariant, $variant); // Panggil method svPrdAttrVls
+                $this->_saveProductAttributeValues($newProductVariant, $variant, $product->id); // Panggil method svPrdAttrVls
             }
         }
     }
 
-    private function saveProductAttributeValues($product, $variant) // Method svPrdAttrVls
+    private function _saveProductAttributeValues($product, $variant, $parentProductID) // Method svPrdAttrVls
     {
         foreach (array_values($variant) as $attributeOptionID) {
             $attributeOption = AttributeOption::find($attributeOptionID);
 
             $attributeValueParams = [
+                'parent_product_id' => $parentProductID,
                 'product_id' => $product->id,
                 'attribute_id' => $attributeOption->attribute_id,
                 'text_value' => $attributeOption->name,
@@ -171,17 +172,19 @@ class ProductController extends Controller
         $params['slug'] = Str::slug($params['name']);
         $params['user_id'] = Auth::user()->id;
 
-        $product = DB::transaction(function () use ($params) {
-            $categoryIds = !empty($params['category_ids']) ? $params['category_ids'] : []; // Tangkap id category yang dipilih
-            $product = Product::create($params);
-            $product->categories()->sync($categoryIds);
+        $product = DB::transaction(
+            function () use ($params) {
+                $categoryIds = !empty($params['category_ids']) ? $params['category_ids'] : []; // Tangkap id category yang dipilih
+                $product = Product::create($params);
+                $product->categories()->sync($categoryIds); // Simpan category
 
-            if ($params['type'] == 'configurable') { // Ketika user menambahkan product dengan type configurable
-                $this->generateProductVariants($product, $params);
+                if ($params['type'] == 'configurable') { // Ketika user menambahkan product dengan type configurable
+                    $this->_generateProductVariants($product, $params);
+                }
+
+                return $product;
             }
-
-            return $product;
-        });
+        );
 
         if ($product) {
             Session::flash('success', 'Product has been saved!');
@@ -189,7 +192,6 @@ class ProductController extends Controller
             Session::flash('error', 'Product could not be saved!');
         }
 
-        // return redirect('admin/products');
         return redirect('admin/products/'. $product->id .'/edit/');
     }
 
@@ -227,7 +229,7 @@ class ProductController extends Controller
         $this->data['product'] = $product;
         $this->data['productID'] = $product->id;
         
-        // Im adding this, but lame
+        // I'm made this for adding qty to $product, but the one which indokoding made is way better
         // if ($product->type == 'simple') {
         //     if ($product->productInventory()->where('product_id', $product->id)->exists()) {
         //         $this->data['qty'] = $product->productInventory->qty;
@@ -251,25 +253,27 @@ class ProductController extends Controller
     public function update(ProductRequest $request, $id)
     {
         $params = $request->except('_token'); // Ambil seluruh request kecuali token
-        // dd($params);
+
         $params['slug'] = Str::slug($params['name']);
 
         $product = Product::findOrFail($id);
 
         $saved = false; // Flag untuk proses penyimpanan (berhasil atau tidak)
-        $saved = DB::transaction(function () use ($product, $params) {
-            $categoryIds = !empty($params['category_ids']) ? $params['category_ids'] : [];
-            $product->update($params);
-            $product->categories()->sync($categoryIds); // Kita singkronkan kembali dengan categories
+        $saved = DB::transaction(
+            function () use ($product, $params) {
+                $categoryIds = !empty($params['category_ids']) ? $params['category_ids'] : [];
+                $product->update($params);
+                $product->categories()->sync($categoryIds); // Kita singkronkan kembali dengan categories
 
-            if ($product->type == 'configurable') { // Cek apakah product configurable atau simple
-                $this->updateProductVariants($params); // Panggil method uptPrdVrnts
-            } else {
-                ProductInventory::updateOrCreate(['product_id' => $product->id], ['qty' => $params['qty']]);
+                if ($product->type == 'configurable') { // Cek apakah product configurable atau simple
+                    $this->_updateProductVariants($params); // Panggil method uptPrdVrnts
+                } else {
+                    ProductInventory::updateOrCreate(['product_id' => $product->id], ['qty' => $params['qty']]);
+                }
+
+                return true;
             }
-
-            return true;
-        });
+        );
 
         if ($saved) {
             Session::flash('success', 'Product has been updated!');
@@ -280,7 +284,7 @@ class ProductController extends Controller
         return redirect('admin/products');
     }
 
-    private function updateProductVariants($params) // Method uptPrdVrnts
+    private function _updateProductVariants($params) // Method uptPrdVrnts
     {
         if ($params['variants']) {
             foreach ($params['variants'] as $productParams) {

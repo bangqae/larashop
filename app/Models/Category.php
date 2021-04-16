@@ -28,7 +28,7 @@ class Category extends Model
 
     public function scopeParentCategories($query)
     {
-        return $query->where('parent_id', 0);
+        return $query->where('parent_id', 0); // Ambil yang parent_id nya 0
     }
 
     public static function childIds($parentId = 0)
