@@ -26,7 +26,10 @@ class ProductController extends Controller
 {
     use Authorizable;
 
-    /** Method khusus yang akan dieksekusi pada saat pembuatan objek (instance). */
+    /** 
+     * Method khusus yang akan dieksekusi
+     * pada saat pembuatan objek (instance).
+     */
     public function __construct()
     {
         parent::__construct();
@@ -69,11 +72,23 @@ class ProductController extends Controller
         return view('admin.products.form', $this->data);
     }
 
+    /**
+	 * Get configurable attributes for products
+	 *
+	 * @return array
+	 */
     private function _getConfigurableAttributes() // Method getConAtts
     {
         return Attribute::where('is_configurable', true)->get(); // Ambil attribute yang configurable
     }
 
+    /**
+	 * Generate attribute combination depend on the provided attributes
+	 *
+	 * @param array $arrays attributes
+	 *
+	 * @return array
+	 */
     private function _generateAttributeCombinations($arrays) // Method untuk kombinasi attributes, genAttrCombs
     {
         $result = [[]];
@@ -89,6 +104,13 @@ class ProductController extends Controller
         return $result;
     }
 
+    /**
+	 * Convert variant attributes as variant name
+	 *
+	 * @param array $variant variant
+	 *
+	 * @return string
+	 */
     private function _convertVariantAsName($variant) // Konversi variant menjadi name product
     {
         $variantName = '';
@@ -105,6 +127,14 @@ class ProductController extends Controller
         return $variantName;
     }
 
+    /**
+	 * Generate product variants for the configurable product
+	 *
+	 * @param Product $product product object
+	 * @param array   $params  params
+	 *
+	 * @return void
+	 */
     private function _generateProductVariants($product, $params) // Method genPrdVrnts
     {
         $configurableAttributes = $this->_getConfigurableAttributes(); // Ambil data attribute dari method getConAtts
@@ -144,6 +174,15 @@ class ProductController extends Controller
         }
     }
 
+    /**
+	 * Save the product attribute values
+	 *
+	 * @param Product $product         product object
+	 * @param array   $variant         variant
+	 * @param int     $parentProductID parent product ID
+	 *
+	 * @return void
+	 */
     private function _saveProductAttributeValues($product, $variant, $parentProductID) // Method svPrdAttrVls
     {
         foreach (array_values($variant) as $attributeOptionID) {
@@ -163,7 +202,8 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\ProductRequest  $request
+     * @param  ProductRequest  $request params
+     * 
      * @return \Illuminate\Http\Response
      */
     public function store(ProductRequest $request)
@@ -196,22 +236,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param int $id product ID
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
     public function edit($id)
     {
         if (empty($id)) { // Kalo $id-nya null, arahkan ke method create
@@ -243,13 +273,14 @@ class ProductController extends Controller
         return view('admin.products.form', $this->data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  App\Http\Requests\ProductRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param ProductRequest $request params
+	 * @param int            $id      product ID
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
     public function update(ProductRequest $request, $id)
     {
         $params = $request->except('_token'); // Ambil seluruh request kecuali token
@@ -284,6 +315,13 @@ class ProductController extends Controller
         return redirect('admin/products');
     }
 
+    /**
+	 * Product variants
+	 *
+	 * @param array $params params
+	 *
+	 * @return void
+	 */
     private function _updateProductVariants($params) // Method uptPrdVrnts
     {
         if ($params['variants']) {
@@ -299,12 +337,13 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param int $id product id
+	 *
+	 * @return void
+	 */
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
@@ -316,12 +355,13 @@ class ProductController extends Controller
         return redirect('admin/products');
     }
 
-    /**
-     * Display list of images.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Show product images
+	 *
+	 * @param int $id product id
+	 *
+	 * @return void
+	 */
     public function images($id)
     {
         if (empty($id)) { // Kalo $id-nya null, ubah jadi method create
@@ -336,13 +376,14 @@ class ProductController extends Controller
         return view('admin.products.images', $this->data);
     }
 
-    /**
-     * Show the form for add new product image.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function add_image($id)
+	/**
+	 * Show add image form
+	 *
+	 * @param int $id product id
+	 *
+	 * @return Response
+	 */
+    public function addImage($id)
     {
         if (empty($id)) { // Kalo $id-nya null, kembali ke index
             return redirect('admin/products');
@@ -356,14 +397,15 @@ class ProductController extends Controller
         return view('admin.products.image_form', $this->data);
     }
 
-    /**
-     * Add new image to specified product.
-     *
-     * @param  App\Http\Requests\ProductImageRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response 
-     */  
-    public function upload_image(ProductImageRequest $request, $id)
+	/**
+	 * Upload image
+	 *
+	 * @param ProductImageRequest $request params
+	 * @param int                 $id      product id
+	 *
+	 * @return Response
+	 */
+    public function uploadImage(ProductImageRequest $request, $id)
     {
         $product = Product::findOrFail($id);
 
@@ -373,13 +415,19 @@ class ProductController extends Controller
             $fileName = $name . '.' . $image
             ->getClientOriginalExtension(); // Ambil ekstensi asli file
 
-            $folder = '/uploads/images'; // Folder file image
-            $filePath = $image->storeAs($folder, $fileName, 'public');
+            $folder = ProductImage::UPLOAD_DIR. '/images'; // Folder file image
+            
+            $filePath = $image->storeAs($folder .'/original', $fileName, 'public');
 
-            $params = [
-                'product_id' => $product->id,
-                'path' => $filePath,
-            ];
+            $resizedImage = $this->_resizeImage($image, $fileName, $folder);
+
+            $params = array_merge(
+                [
+                    'product_id' => $product->id,
+                    'path' => $filePath,
+                ],
+                $resizedImage
+            );
 
             if (ProductImage::create($params)) {
                 Session::flash('success', 'Image has been uploaded!');
@@ -392,12 +440,65 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove image file and image data from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function remove_image($id)
+	 * Resize image
+	 *
+	 * @param file   $image    raw file
+	 * @param string $fileName image file name
+	 * @param string $folder   folder name
+	 *
+	 * @return Response
+	 */
+	private function _resizeImage($image, $fileName, $folder)
+	{
+		$resizedImage = []; // Inisiate array for ['small','medium','large','extra-large]
+
+		$smallImageFilePath = $folder . '/small/' . $fileName;
+		$size = explode('x', ProductImage::SMALL);
+		list($width, $height) = $size;
+
+		$smallImageFile = \Image::make($image)->fit($width, $height)->stream();
+		if (\Storage::put('public/' . $smallImageFilePath, $smallImageFile)) {
+			$resizedImage['small'] = $smallImageFilePath;
+		}
+		
+		$mediumImageFilePath = $folder . '/medium/' . $fileName;
+		$size = explode('x', ProductImage::MEDIUM);
+		list($width, $height) = $size;
+
+		$mediumImageFile = \Image::make($image)->fit($width, $height)->stream();
+		if (\Storage::put('public/' . $mediumImageFilePath, $mediumImageFile)) {
+			$resizedImage['medium'] = $mediumImageFilePath;
+		}
+
+		$largeImageFilePath = $folder . '/large/' . $fileName;
+		$size = explode('x', ProductImage::LARGE);
+		list($width, $height) = $size;
+
+		$largeImageFile = \Image::make($image)->fit($width, $height)->stream();
+		if (\Storage::put('public/' . $largeImageFilePath, $largeImageFile)) {
+			$resizedImage['large'] = $largeImageFilePath;
+		}
+
+		$extraLargeImageFilePath  = $folder . '/xlarge/' . $fileName;
+		$size = explode('x', ProductImage::EXTRA_LARGE);
+		list($width, $height) = $size;
+
+		$extraLargeImageFile = \Image::make($image)->fit($width, $height)->stream();
+		if (\Storage::put('public/' . $extraLargeImageFilePath, $extraLargeImageFile)) {
+			$resizedImage['extra_large'] = $extraLargeImageFilePath;
+		}
+
+		return $resizedImage;
+	}
+
+	/**
+	 * Remove image
+	 *
+	 * @param int $id image id
+	 *
+	 * @return Response
+	 */
+    public function removeImage($id)
     {
         $image = ProductImage::findOrFail($id);
 

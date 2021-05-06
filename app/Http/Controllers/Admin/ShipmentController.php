@@ -37,7 +37,7 @@ class ShipmentController extends Controller
 		$shipments = Shipment::join('orders', 'shipments.order_id', '=', 'orders.id')
 		->whereNull('orders.deleted_at')
 		// ->whereRaw('orders.deleted_at IS NULL')
-		->whereNotNull('track_number')
+		// ->whereNotNull('track_number')
 			->orderBy('shipments.created_at', 'DESC')->paginate(10);
 		$this->data['shipments'] = $shipments;
 

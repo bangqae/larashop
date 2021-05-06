@@ -25,7 +25,7 @@ class ProductImageRequest extends FormRequest
     {
         return [
             // Form name di image_form adalah 'image'
-            'image' => 'required|image:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image:jpeg,png,jpg,gif|max:4096',
         ];
     }
 }
