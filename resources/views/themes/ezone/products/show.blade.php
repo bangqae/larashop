@@ -81,7 +81,7 @@
 							</div>
 						</div>
 						<div class="details-price">
-							<span>{{ number_format($product->price_label()) }}</span>
+							<span>{{ number_format($product->priceLabel()) }}</span>
 						</div>
 						<p>{{ $product->short_desc }}</p>
 						{!! Form::open(['url' => 'carts']) !!}

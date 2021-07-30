@@ -23,82 +23,201 @@ class Product extends Model
         'status',
     ];
 
+    public const DRAFT = 0;
+	public const ACTIVE = 1;
+	public const INACTIVE = 2;
+
+	public const STATUSES = [
+		self::DRAFT => 'draft',
+		self::ACTIVE => 'active',
+		self::INACTIVE => 'inactive',
+	];
+
+	public const SIMPLE = 'simple';
+	public const CONFIGURABLE = 'configurable';
+
+	public const TYPES = [
+		self::SIMPLE => 'Simple',
+		self::CONFIGURABLE => 'Configurable',
+	];
+
+    /**
+	 * Define relationship with the User
+	 *
+	 * @return void
+	 */
     public function user() // Tunggal
     {
         return $this->belongsTo('App\Models\User'); // Relasi 1 to 1, tapi di model User : 1 to many
     }
 
+    /**
+	 * Define relationship with the ProductInventory
+	 *
+	 * @return void
+	 */
     public function productInventory() // Tunggal
     {
         return $this->hasOne('App\Models\ProductInventory'); // 1 to 1
     }
 
-    public function categories() // Jamak
+    /**
+	 * Define relationship with the Category
+	 *
+	 * @return void
+	 */
+    public function categories() // Jamak, product_categories is pivot table
     {
-        // product_categories is pivot table
         return $this->belongsToMany('App\Models\Category','product_categories'); // many to many
     }
 
+    /**
+	 * Define relationship with the Variants
+	 *
+	 * @return void
+	 */
     public function variants() // Jamak
     {
         return $this->hasMany('App\Models\Product', 'parent_id')->orderBy('price', 'ASC'); // 1 parent can have many variant
     }
 
+    /**
+	 * Define relationship with the Parent
+	 *
+	 * @return void
+	 */
     public function parent() // Tunggal
     {
         return $this->belongsTo('App\Models\Product', 'parent_id'); // 1 variant only have 1 parent
     }
 
+    /**
+	 * Define relationship with the ProductAttributeValue
+	 *
+	 * @return void
+	 */
     public function productAttributeValues() // Jamak
     {
         return $this->hasMany('App\Models\ProductAttributeValue', 'parent_product_id'); // 1 to many
     }
 
+    /**
+	 * Define relationship with the ProductImage
+	 *
+	 * @return void
+	 */
     public function productImages() // Jamak
     {
         return $this->hasMany('App\Models\ProductImage')->orderBy('id', 'DESC'); // 1 to many
     }
 
+	/**
+	 * Define relationship with the OrderItem
+	 *
+	 * @return void
+	 */
+	public function orderItems()
+	{
+		return $this->hasMany('App\Models\OrderItem');
+	}
+
+    /**
+	 * Define relationship with the Shipment
+	 *
+	 * @return void
+	 */
     public static function statuses()
     {
-        return [
-            0 => 'draft',
-            1 => 'active',
-            2 => 'inactive',
-        ];
+        return self::STATUSES;
     }
 
-    function status_label()
+	/**
+	 * Get status label
+	 *
+	 * @return string
+	 */
+    public function statusLabel()
     {
         $statuses = $this->statuses();
 
        return isset($this->status) ? $statuses[$this->status] : null;
     }
 
+    /**
+	 * Get product types
+	 *
+	 * @return array
+	 */
     public static function types() // Whether the product has other variants or not
     {
-        return [
-            'simple' => 'Simple',
-            'configurable' => 'Configurable',
-        ];
+        return self::TYPES;
     }
 
+    /**
+	 * Scope active product
+	 *
+	 * @param Eloquent $query query builder
+	 *
+	 * @return Eloquent
+	 */
     public function scopeActive($query)
     {
         return $query->where('status', 1)
             ->where('parent_id', NULL);
     }
 
-    function price_label()
+	/**
+	 * Scope popular products
+	 *
+	 * @param Eloquent $query query builder
+	 * @param int      $limit limit
+	 *
+	 * @return Eloquent
+	 */
+    public function scopePopular($query, $limit = 10)
+    {
+        $month = now()->format('m');
+
+        return $query->selectRaw('products.*, COUNT(order_items.id) as total_sold')
+            ->join('order_items', 'order_items.product_id', '=', 'products.id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->whereRaw(
+                'orders.status = :order_status AND MONTH(orders.order_date) = :month',
+                [
+                    'order_status' => Order::COMPLETED,
+                    'month' => $month
+                ]
+            )
+            ->groupBy('products.id')
+            ->orderByRaw('total_sold DESC')
+            ->limit($limit);
+    }
+
+	/**
+	 * Get price label
+	 *
+	 * @return string
+	 */
+    public function priceLabel()
     {
         return ($this->variants->count() > 0) ? $this->variants->first()->price : $this->price;
     }
 
+	/**
+	 * Is configurable product
+	 *
+	 * @return boolean
+	 */
     public function configurable()
     {
         return $this->type == 'configurable';
     }
     
+	/**
+	 * Is simple product
+	 *
+	 * @return boolean
+	 */
     public function simple()
     {
         return $this->type == 'simple';

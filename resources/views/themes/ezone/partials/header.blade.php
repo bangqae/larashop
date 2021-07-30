@@ -3,14 +3,14 @@
         <div class="container-fluid">
             <div class="header-bottom-wrapper">
                 <div class="logo-2 furniture-logo ptb-30">
-                    <a href="index.html">
+                    <a href="{{ url('/') }}">
                         <img src="{{ asset('themes/ezone/assets/img/logo/2.png') }}" alt="">
                     </a>
                 </div>
                 <div class="menu-style-2 furniture-menu menu-hover">
                     <nav>
                         <ul>
-                            <li><a href="#">home</a>
+                            <li><a href="{{ url('/') }}">home</a>
                                 <ul class="single-dropdown">
                                     <li><a href="index.html">Fashion</a></li>
                                     <li><a href="index-fashion-2.html">Fashion style 2</a></li>
