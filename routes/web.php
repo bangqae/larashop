@@ -37,6 +37,8 @@ Route::get('payments/completed', 'PaymentController@completed');
 Route::get('payments/unfinish', 'PaymentController@unfinish');
 Route::get('payments/failed', 'PaymentController@failed');
 
+Route::resource('favorites', 'FavoriteController');
+
 Route::group(
     ['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth']],
     function () {

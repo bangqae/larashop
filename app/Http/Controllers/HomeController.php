@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::popular()->get();
+        $products = Product::popular()->get(); //scopePopular
         $this->data['products'] = $products;
         // dd($products);
         return $this->loadTheme('home', $this->data);
