@@ -21,14 +21,14 @@
         {{-- Catalog --}}
         {{-- <li class="has-sub active expand"> --}}
         <li class="has-sub {{ ($currentAdminMenu == 'catalog') ? 'active expand' : ''}}">
-          <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#dashboard"
-            aria-expanded="false" aria-controls="dashboard">
-            <i class="mdi mdi-view-dashboard-outline"></i>
-            <span class="nav-text">Catalog</span> <b class="caret"></b>
-          </a>
+          <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#catalog"
+						aria-expanded="false" aria-controls="catalog">
+						<i class="mdi mdi-view-dashboard-outline"></i>
+						<span class="nav-text">Catalog</span> <b class="caret"></b>
+					</a>
           {{-- <ul class="collapse show" id="dashboard" data-parent="#sidebar-menu"> --}}
-          <ul class="collapse  {{ ($currentAdminMenu == 'catalog') ? 'show' : ''}}" id="dashboard" data-parent="#sidebar-menu">
-            <div class="sub-menu">
+          <ul class="collapse {{ ($currentAdminMenu == 'catalog') ? 'show' : ''}}" id="catalog" data-parent="#sidebar-menu">
+						<div class="sub-menu">
               {{-- <li class="active"> --}}
               <li class="{{ ($currentAdminSubMenu == 'product') ? 'active' : ''}}">
                 <a class="sidenav-item-link" href="{{ url('admin/products')}}">
@@ -52,10 +52,10 @@
         {{-- Orders --}}
         <li  class="has-sub {{ ($currentAdminMenu == 'order') ? 'expand active' : ''}}">
           <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#orders"
-            aria-expanded="false" aria-controls="orders">
-            <i class="mdi mdi-cart-outline"></i>
-            <span class="nav-text">Orders</span> <b class="caret"></b>
-          </a>
+						aria-expanded="false" aria-controls="orders">
+						<i class="mdi mdi-cart-outline"></i>
+						<span class="nav-text">Orders</span> <b class="caret"></b>
+					</a>
           <ul class="collapse {{ ($currentAdminMenu == 'order') ? 'show' : ''}}"  id="orders"
             data-parent="#sidebar-menu">
             <div class="sub-menu">
@@ -78,10 +78,29 @@
           </ul>
         </li>
 
+        {{-- General --}}
+        <li  class="has-sub {{ ($currentAdminMenu == 'general') ? 'expand active' : ''}}">
+					<a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#general"
+						aria-expanded="false" aria-controls="general">
+						<i class="mdi mdi-settings"></i>
+						<span class="nav-text">General</span> <b class="caret"></b>
+					</a>
+					<ul class="collapse {{ ($currentAdminMenu == 'general') ? 'show' : ''}}"  id="general"
+						data-parent="#sidebar-menu">
+						<div class="sub-menu">
+							<li  class="{{ ($currentAdminSubMenu == 'slide') ? 'active' : ''}}" >
+								<a class="sidenav-item-link" href="{{ url('admin/slides')}}">
+								<span class="nav-text">Slides</span>
+								</a>
+							</li>
+						</div>
+					</ul>
+				</li>
+
         {{-- Users & Roles --}}
         <li class="has-sub {{ ($currentAdminMenu == 'role-user') ? 'active expand' : ''}}">
           <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#auth"
-            aria-expanded="false" aria-controls="dashboard">
+            aria-expanded="false" aria-controls="auth">
             <i class="mdi mdi-account-multiple-outline"></i>
             <span class="nav-text">Users &amp; Roles</span> <b class="caret"></b>
           </a>

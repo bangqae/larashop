@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
+
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\Slide;
 
 class HomeController extends Controller
 {
@@ -26,7 +29,10 @@ class HomeController extends Controller
     {
         $products = Product::popular()->get(); //scopePopular
         $this->data['products'] = $products;
-        // dd($products);
+        
+        $slides = Slide::active()->orderBy('position', 'ASC')->get(); //scopeActive
+		$this->data['slides'] = $slides;
+
         return $this->loadTheme('home', $this->data);
     }
 }

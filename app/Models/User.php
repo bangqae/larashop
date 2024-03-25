@@ -58,4 +58,14 @@ class User extends Authenticatable
 	{
 		return $this->hasMany('App\Models\Favorite');
 	}
+
+	/**
+	 * Add full_name custom attribute to user object
+	 *
+	 * @return void
+	 */
+	public function getUserFullNameAttribute()
+	{
+		return "{$this->first_name} {$this->last_name}";
+	}
 }
